@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48" fill="none">
+  <text x="0" y="34" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="800" fill="#2F2C25" letter-spacing="4">APEX</text>
+  <rect x="108" y="14" width="24" height="24" rx="4" fill="#2F2C25" opacity="0.12"/>
+  <path d="M116 32l4-12 4 12" stroke="#2F2C25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

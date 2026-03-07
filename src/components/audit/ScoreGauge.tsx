@@ -9,11 +9,11 @@ interface ScoreGaugeProps {
 }
 
 function getScoreColor(score: number): string {
-  if (score >= 80) return '#15803D';
-  if (score >= 60) return '#4ADE80';
-  if (score >= 40) return '#EAB308';
-  if (score >= 20) return '#F97316';
-  return '#EF4444';
+  if (score >= 80) return '#2D8B57';
+  if (score >= 60) return '#4A9B6B';
+  if (score >= 40) return '#D49530';
+  if (score >= 20) return '#D97A3E';
+  return '#C94432';
 }
 
 function getScoreLabel(score: number): string {
@@ -24,7 +24,7 @@ function getScoreLabel(score: number): string {
   return 'Critique';
 }
 
-export default function ScoreGauge({ score, size = 200, strokeWidth = 12 }: ScoreGaugeProps) {
+export default function ScoreGauge({ score, size = 200, strokeWidth = 10 }: ScoreGaugeProps) {
   const [animatedScore, setAnimatedScore] = useState(0);
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -55,7 +55,7 @@ export default function ScoreGauge({ score, size = 200, strokeWidth = 12 }: Scor
             cy={center}
             r={radius}
             fill="none"
-            stroke="#F3EDE5"
+            stroke="#F0EBE3"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -72,15 +72,15 @@ export default function ScoreGauge({ score, size = 200, strokeWidth = 12 }: Scor
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-5xl font-bold" style={{ color }}>
+          <span className="text-5xl font-semibold tracking-tight" style={{ color }}>
             {animatedScore}
           </span>
-          <span className="text-sm text-warm-500 font-medium">/100</span>
+          <span className="text-sm text-warm-400 font-medium">/100</span>
         </div>
       </div>
       <span
-        className="text-sm font-semibold px-4 py-1.5 rounded-full"
-        style={{ backgroundColor: color + '15', color }}
+        className="text-xs font-semibold uppercase tracking-wider px-4 py-1.5 rounded-full"
+        style={{ backgroundColor: color + '12', color }}
       >
         {getScoreLabel(score)}
       </span>

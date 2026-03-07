@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <path d="M10 24C10 16.268 16.268 10 24 10s14 6.268 14 14-6.268 14-14 14S10 31.732 10 24z" fill="#2F2C25" opacity="0.06"/>
+  <path d="M24 14c-2.5 0-4.8 1-6.5 2.7a9.5 9.5 0 000 14.6c1.7 1.7 4 2.7 6.5 2.7" stroke="#2F2C25" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+  <text x="46" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="800" fill="#2F2C25" letter-spacing="1">Carrefour</text>
+</svg>

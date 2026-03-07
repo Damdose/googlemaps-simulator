@@ -115,10 +115,16 @@ export function evaluateAllCriteria(details: PlaceDetails): CriteriaResult[] {
 }
 
 export function calculateOverallScore(criteria: CriteriaResult[]): number {
-  let score = 0;
+  let earned = 0;
+  let evaluableWeight = 0;
+
   for (const c of criteria) {
-    if (c.status === 'pass') score += c.weight;
-    else if (c.status === 'partial') score += c.weight * 0.5;
+    if (c.status === 'unknown') continue;
+    evaluableWeight += c.weight;
+    if (c.status === 'pass') earned += c.weight;
+    else if (c.status === 'partial') earned += c.weight * 0.5;
   }
-  return Math.round(score);
+
+  if (evaluableWeight === 0) return 0;
+  return Math.round((earned / evaluableWeight) * 100);
 }

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <circle cx="18" cy="24" r="10" fill="#2F2C25" opacity="0.08"/>
+  <circle cx="18" cy="24" r="5" fill="#2F2C25" opacity="0.2"/>
+  <circle cx="18" cy="24" r="2" fill="#2F2C25"/>
+  <text x="38" y="22" font-family="Georgia, 'Times New Roman', serif" font-size="17" font-weight="400" font-style="italic" fill="#2F2C25">bloom</text>
+  <text x="38" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="600" fill="#2F2C25" letter-spacing="4" opacity="0.45">STUDIO</text>
+</svg>

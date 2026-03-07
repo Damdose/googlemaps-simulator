@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 48" fill="none">
+  <text x="0" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="300" fill="#2F2C25" letter-spacing="6">SOLARIS</text>
+  <line x1="0" y1="8" x2="155" y2="8" stroke="#2F2C25" stroke-width="1.5" opacity="0.15"/>
+  <line x1="0" y1="42" x2="155" y2="42" stroke="#2F2C25" stroke-width="1.5" opacity="0.15"/>
+</svg>

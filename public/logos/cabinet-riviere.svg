@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <g transform="translate(4, 6)">
+    <rect x="2" y="4" width="8" height="28" rx="1.5" fill="#2F2C25" opacity="0.15"/>
+    <rect x="13" y="4" width="8" height="28" rx="1.5" fill="#2F2C25" opacity="0.3"/>
+    <rect x="24" y="4" width="8" height="28" rx="1.5" fill="#2F2C25"/>
+    <path d="M2 2h30" stroke="#2F2C25" stroke-width="2" stroke-linecap="round"/>
+    <path d="M2 34h30" stroke="#2F2C25" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="48" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#2F2C25" opacity="0.45" letter-spacing="3">CABINET</text>
+  <text x="48" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="20" font-weight="700" fill="#2F2C25" letter-spacing="-0.5">Rivi�re</text>
+</svg>

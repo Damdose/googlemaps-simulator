@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <g transform="translate(4, 8)">
+    <rect x="0" y="8" width="32" height="22" rx="3" stroke="#2F2C25" stroke-width="2" fill="none"/>
+    <path d="M8 8V4c0-1.5 1.5-3 8-3s8 1.5 8 3v4" stroke="#2F2C25" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="16" cy="19" r="4" fill="#2F2C25" opacity="0.15"/>
+  </g>
+  <text x="44" y="20" font-family="Georgia, 'Times New Roman', serif" font-size="10" font-weight="400" fill="#2F2C25" opacity="0.5" letter-spacing="2">LE</text>
+  <text x="44" y="38" font-family="Georgia, 'Times New Roman', serif" font-size="20" font-weight="700" fill="#2F2C25" letter-spacing="-0.5">Comptoir</text>
+</svg>

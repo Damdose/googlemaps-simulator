@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 48" fill="none">
+  <rect x="0" y="10" width="28" height="28" rx="14" fill="#2F2C25"/>
+  <circle cx="14" cy="24" r="4" fill="white"/>
+  <text x="38" y="33" font-family="system-ui, -apple-system, sans-serif" font-size="26" font-weight="600" fill="#2F2C25" letter-spacing="1">luma</text>
+</svg>

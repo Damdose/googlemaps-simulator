@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Search, MapPin, Loader2 } from 'lucide-react';
+import { RiSearchLine, RiMapPin2Fill, RiLoader4Line } from 'react-icons/ri';
 
 interface PlaceSuggestion {
   placeId: string;
@@ -117,7 +117,6 @@ export default function PlaceSearchInput({ onSelect }: PlaceSearchInputProps) {
         throw new Error(details.error);
       }
 
-      // Reset session token for next autocomplete session
       sessionTokenRef.current = crypto.randomUUID();
 
       onSelect({
@@ -131,7 +130,6 @@ export default function PlaceSearchInput({ onSelect }: PlaceSearchInputProps) {
       });
     } catch (err) {
       console.error('Place details error:', err);
-      // Fallback: use autocomplete data
       onSelect({
         placeId: place.placeId,
         name: place.mainText,
@@ -147,9 +145,11 @@ export default function PlaceSearchInput({ onSelect }: PlaceSearchInputProps) {
   }
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
-      <div className="relative">
-        <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400" />
+    <div className="relative w-full">
+      <div className="relative group">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center group-focus-within:bg-accent-light transition-colors">
+          <RiSearchLine className="w-[18px] h-[18px] text-warm-600" />
+        </div>
         <input
           ref={inputRef}
           type="text"
@@ -158,31 +158,33 @@ export default function PlaceSearchInput({ onSelect }: PlaceSearchInputProps) {
           onKeyDown={handleKeyDown}
           onFocus={() => suggestions.length > 0 && setIsOpen(true)}
           placeholder="Entrez le nom de votre établissement..."
-          className="w-full pl-14 pr-14 py-5 text-lg rounded-2xl border-2 border-warm-200 bg-white shadow-card focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-warm-400"
+          className="w-full pl-[4.5rem] pr-14 py-5 text-lg rounded-full border border-warm-200 bg-white shadow-card focus:border-warm-400 focus:ring-4 focus:ring-accent/10 outline-none transition-all duration-200 placeholder:text-warm-400"
           autoComplete="off"
           disabled={isSelectingDetails}
         />
         {(isLoading || isSelectingDetails) && (
-          <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400 animate-spin" />
+          <RiLoader4Line className="absolute right-5 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400 animate-spin" />
         )}
       </div>
 
       {isOpen && suggestions.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-elevated border border-warm-100 overflow-hidden z-50"
+          className="absolute top-full left-0 right-0 mt-3 bg-white rounded-2xl shadow-elevated border border-warm-100 overflow-hidden z-50"
         >
           {suggestions.map((place, i) => (
             <button
               key={place.placeId}
               onClick={() => handleSelect(place)}
-              className={`w-full flex items-start gap-3 px-5 py-4 text-left transition-colors hover:bg-warm-50 ${
-                i === selectedIndex ? 'bg-primary-light' : ''
-              } ${i > 0 ? 'border-t border-warm-100' : ''}`}
+              className={`w-full flex items-center gap-4 px-5 py-4 text-left transition-all duration-150 ${
+                i === selectedIndex ? 'bg-accent-light' : 'hover:bg-warm-50'
+              } ${i > 0 ? 'border-t border-warm-100/60' : ''}`}
             >
-              <MapPin className="w-5 h-5 text-primary mt-0.5 shrink-0" />
+              <div className="w-10 h-10 rounded-full bg-warm-100 flex items-center justify-center shrink-0">
+                <RiMapPin2Fill className="w-[18px] h-[18px] text-warm-600" />
+              </div>
               <div className="min-w-0">
-                <p className="font-semibold text-warm-800 truncate">{place.mainText}</p>
+                <p className="font-semibold text-warm-900 truncate">{place.mainText}</p>
                 <p className="text-sm text-warm-500 truncate">{place.secondaryText}</p>
               </div>
             </button>

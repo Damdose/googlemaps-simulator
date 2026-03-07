@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Clock } from 'lucide-react';
+import { RiTimeLine } from 'react-icons/ri';
 
 interface CountdownTimerProps {
   durationMinutes?: number;
@@ -40,13 +40,10 @@ export default function CountdownTimer({ durationMinutes = 20 }: CountdownTimerP
   if (isExpired) return null;
 
   return (
-    <div className="flex items-center gap-2 text-sm font-medium text-cta">
-      <Clock className="w-4 h-4" />
-      <span>
-        Offre expire dans{' '}
-        <span className="font-bold tabular-nums">
-          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-        </span>
+    <div className="inline-flex items-center gap-1.5 text-sm font-medium bg-accent/20 text-accent-dark px-3 py-1 rounded-full">
+      <RiTimeLine className="w-3.5 h-3.5" />
+      <span className="font-semibold tabular-nums">
+        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </span>
     </div>
   );

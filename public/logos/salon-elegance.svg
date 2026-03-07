@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <g transform="translate(6, 6)">
+    <circle cx="16" cy="10" r="8" stroke="#2F2C25" stroke-width="1.8" fill="none"/>
+    <path d="M8 18c0 8 5 14 16 16" stroke="#2F2C25" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path d="M24 18c0 8-5 14-16 16" stroke="#2F2C25" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <circle cx="16" cy="10" r="3" fill="#2F2C25" opacity="0.15"/>
+  </g>
+  <text x="48" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#2F2C25" opacity="0.45" letter-spacing="3">SALON</text>
+  <text x="48" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="19" font-weight="300" fill="#2F2C25" letter-spacing="1" font-style="italic">�l�gance</text>
+</svg>

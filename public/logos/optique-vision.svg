@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 48" fill="none">
+  <g transform="translate(2, 10)">
+    <circle cx="12" cy="14" r="10" stroke="#2F2C25" stroke-width="2" fill="none"/>
+    <circle cx="34" cy="14" r="10" stroke="#2F2C25" stroke-width="2" fill="none"/>
+    <path d="M22 12c2-3 6-3 8 0" stroke="#2F2C25" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M2 10l-2-3" stroke="#2F2C25" stroke-width="2" stroke-linecap="round"/>
+    <path d="M44 10l2-3" stroke="#2F2C25" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <text x="56" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="800" fill="#2F2C25" letter-spacing="-0.5">OPTIQUE</text>
+  <text x="56" y="38" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="400" fill="#2F2C25" opacity="0.45" letter-spacing="2">VISION</text>
+</svg>

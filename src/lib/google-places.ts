@@ -111,6 +111,78 @@ export async function autocomplete(input: string, sessionToken?: string): Promis
     });
 }
 
+export interface NearbyPlace {
+  placeId: string;
+  name: string;
+  address: string;
+  lat: number;
+  lng: number;
+  rating: number;
+  reviewCount: number;
+  photoCount: number;
+  googleMapsUri: string;
+}
+
+export async function searchNearby(
+  lat: number,
+  lng: number,
+  radiusMeters: number,
+  includedType: string,
+  maxResults: number = 10,
+): Promise<NearbyPlace[]> {
+  const body = {
+    includedPrimaryTypes: [includedType],
+    locationRestriction: {
+      circle: {
+        center: { latitude: lat, longitude: lng },
+        radius: radiusMeters,
+      },
+    },
+    maxResultCount: maxResults,
+    languageCode: 'fr',
+  };
+
+  const fieldMask = [
+    'places.id',
+    'places.displayName',
+    'places.formattedAddress',
+    'places.location',
+    'places.rating',
+    'places.userRatingCount',
+    'places.photos',
+    'places.googleMapsUri',
+  ].join(',');
+
+  const res = await fetch(`${BASE_URL}/places:searchNearby`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': API_KEY,
+      'X-Goog-FieldMask': fieldMask,
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Nearby Search error: ${res.status} — ${err}`);
+  }
+
+  const data: { places?: PlaceResource[] } = await res.json();
+
+  return (data.places ?? []).map(p => ({
+    placeId: p.id ?? '',
+    name: p.displayName?.text ?? '',
+    address: p.formattedAddress ?? '',
+    lat: p.location?.latitude ?? 0,
+    lng: p.location?.longitude ?? 0,
+    rating: p.rating ?? 0,
+    reviewCount: p.userRatingCount ?? 0,
+    photoCount: Array.isArray(p.photos) ? p.photos.length : 0,
+    googleMapsUri: p.googleMapsUri ?? '',
+  }));
+}
+
 export async function getPlaceDetails(placeId: string): Promise<PlaceDetailsResult> {
   const fieldMask = [
     'id',

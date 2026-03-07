@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 48" fill="none">
+  <rect x="4" y="8" width="36" height="32" rx="4" fill="#2F2C25" opacity="0.08"/>
+  <text x="8" y="32" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="900" fill="#2F2C25" letter-spacing="2">FNAC</text>
+  <rect x="95" y="20" width="8" height="8" rx="2" fill="#2F2C25" opacity="0.15"/>
+</svg>
