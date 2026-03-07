@@ -39,6 +39,7 @@ export default function Header() {
   const resourcesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const currentMonth = useMemo(() => FRENCH_MONTHS[new Date().getMonth()], []);
 
   useEffect(() => {
@@ -74,8 +75,8 @@ export default function Header() {
               🔥 2 places dispo
             </span>
             <span>
-              <span className="sm:hidden">🔥 Plus que <strong>2 places en {FRENCH_MONTHS[new Date().getMonth()]}</strong> — Testez l'expérience →</span>
-              <span className="hidden sm:inline">Boost Avis Expérience — Plus que <strong>2 places en {FRENCH_MONTHS[new Date().getMonth()]}</strong> pour tester l'expérience</span>
+              <span className="sm:hidden">🔥 Plus que <strong>2 places en {FRENCH_MONTHS[new Date().getMonth()]}</strong> — Testez l&apos;expérience →</span>
+              <span className="hidden sm:inline">Boost Avis Expérience — Plus que <strong>2 places en {FRENCH_MONTHS[new Date().getMonth()]}</strong> pour tester l&apos;expérience</span>
             </span>
             <span className="hidden sm:inline">→</span>
           </Link>

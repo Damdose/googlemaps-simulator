@@ -1,6 +1,4 @@
 import Link from 'next/link';
-import { CITIES } from '@/lib/cities';
-
 const CONTACT_PHONE = '+33 7 60 55 40 00';
 const CONTACT_PHONE_LINK = 'tel:+33760554000';
 
@@ -127,20 +125,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Villes */}
+        {/* Présence nationale */}
         <div className="mt-8 border-t border-white/10 pt-6 sm:mt-10 sm:pt-8">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.15em] text-white/40">Agence SEO local par ville</p>
-          <div className="flex flex-wrap gap-x-4 gap-y-2">
-            {CITIES.map((city) => (
-              <Link
-                key={city.slug}
-                href={`/agence-seo-local/${city.slug}`}
-                className="text-[13px] text-white/50 transition-colors hover:text-white"
-              >
-                {city.name}
-              </Link>
-            ))}
-          </div>
+          <p className="text-sm text-white/50">Présents dans toute la France</p>
         </div>
 
         <div className="mt-8 border-t border-white/10 pt-5 sm:mt-10 sm:pt-6">

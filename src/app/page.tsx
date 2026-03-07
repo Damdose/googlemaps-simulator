@@ -1184,8 +1184,8 @@ export default function HomePage() {
               {VALUE_PROPS.map((prop, i) => (
                 <Reveal key={prop.title} delay={i * 0.08} variant={i % 2 === 0 ? 'slide-left' : 'slide-right'}>
                   <div className="group relative flex h-full flex-col items-start gap-4 rounded-xl border border-warm-200/80 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:gap-5 sm:rounded-2xl sm:p-7">
-                    <div className="relative h-[60px] w-[60px] rounded-[10px] bg-gradient-to-b from-[#c0cde0] via-[#a8b8d8] to-[#8da4cc] p-[5px] shadow-[0_2px_8px_rgba(80,100,180,0.18),0_4px_14px_rgba(80,100,180,0.12)] transition-all duration-300 group-hover:shadow-[0_4px_16px_rgba(80,100,180,0.24),0_6px_22px_rgba(80,100,180,0.14)] sm:h-[70px] sm:w-[70px] sm:rounded-[12px] sm:p-[6px]">
-                      <div className="flex h-full w-full items-center justify-center rounded-[6px] border border-white/60 bg-gradient-to-b from-white from-30% via-[#f0f4fb] via-65% to-[#dae4f2] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.95)] sm:rounded-[7px]">
+                    <div className="relative h-[60px] w-[60px] rounded-[10px] bg-gradient-to-b from-[#d0d0d0] via-[#b8b8b8] to-[#a0a0a0] p-[5px] shadow-[0_2px_8px_rgba(100,100,100,0.18),0_4px_14px_rgba(100,100,100,0.12)] transition-all duration-300 group-hover:shadow-[0_4px_16px_rgba(100,100,100,0.24),0_6px_22px_rgba(100,100,100,0.14)] sm:h-[70px] sm:w-[70px] sm:rounded-[12px] sm:p-[6px]">
+                      <div className="flex h-full w-full items-center justify-center rounded-[6px] border border-white/60 bg-gradient-to-b from-white from-30% via-[#f4f4f4] via-65% to-[#e2e2e2] shadow-[inset_0_1.5px_0_rgba(255,255,255,0.95)] sm:rounded-[7px]">
                         <prop.Icon weight="bold" className="h-7 w-7 text-[#1d1d1f] sm:h-[34px] sm:w-[34px]" />
                       </div>
                     </div>
