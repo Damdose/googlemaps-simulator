@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, ArrowLeft, CheckCircle, Star, SealCheck,
-  MagnifyingGlass, MapPin, ArrowRight, SpinnerGap,
+  MagnifyingGlass, MapPin, SpinnerGap,
   Lightning, Shield, Clock, TrendUp, Rocket, Gift,
   Trophy, Fire, Crown, Users,
 } from '@phosphor-icons/react';
