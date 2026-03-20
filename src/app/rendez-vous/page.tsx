@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import {
   RiArrowLeftLine,
   RiCalendarScheduleFill,
@@ -14,11 +15,35 @@ import {
 import Script from 'next/script';
 import { motion, useInView } from 'framer-motion';
 
-const TRUST_ITEMS = [
-  { value: '150+', label: 'audits réalisés' },
-  { value: '30 min', label: 'chrono' },
-  { value: '100%', label: 'gratuit' },
-  { value: '4.9/5', label: 'satisfaction' },
+const TESTIMONIALS = [
+  {
+    name: 'Marie L.',
+    role: 'Directrice de boulangerie',
+    avatar: 'https://i.pravatar.cc/80?img=47',
+    text: 'En 30 minutes, Damien a mis le doigt sur exactement pourquoi mes concurrents m\'apparaissaient avant moi. Le plan d\'action était clair et actionnable dès le lendemain.',
+    stars: 5,
+  },
+  {
+    name: 'Thomas G.',
+    role: 'Gérant en plomberie',
+    avatar: 'https://i.pravatar.cc/80?img=12',
+    text: 'Je ne savais même pas que ma fiche Google avait autant de lacunes. Après l\'audit, j\'ai mis en place les recommandations et mes appels entrants ont doublé en 6 semaines.',
+    stars: 5,
+  },
+  {
+    name: 'Sophie M.',
+    role: 'Fondatrice d\'institut de beauté',
+    avatar: 'https://i.pravatar.cc/80?img=44',
+    text: 'Un audit vraiment sérieux et sans blabla commercial. La heatmap m\'a montré visuellement les zones où je n\'existais pas. Très utile et 100% gratuit comme promis.',
+    stars: 5,
+  },
+  {
+    name: 'David R.',
+    role: 'Gérant d\'entreprise de déménagement',
+    avatar: 'https://i.pravatar.cc/80?img=33',
+    text: 'Ce qui m\'a convaincu c\'est la transparence : on m\'a montré exactement où j\'étais et où étaient mes concurrents sur la carte. Maintenant je sais sur quoi concentrer mes efforts.',
+    stars: 5,
+  },
 ];
 
 function Reveal({
@@ -131,13 +156,19 @@ export default function RendezVousPage() {
                 <Reveal delay={0.3}>
                   <div className="mt-10 flex items-center gap-4 rounded-2xl border border-warm-200 bg-white p-4 shadow-soft">
                     <div className="flex -space-x-2">
-                      {['M', 'T', 'S', 'D'].map((initial, i) => (
+                      {TESTIMONIALS.slice(0, 4).map((t, i) => (
                         <div
-                          key={initial}
-                          className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-warm-200 text-xs font-bold text-warm-700"
+                          key={t.name}
+                          className="relative h-9 w-9 overflow-hidden rounded-full border-2 border-white"
                           style={{ zIndex: 4 - i }}
                         >
-                          {initial}
+                          <Image
+                            src={t.avatar}
+                            alt={t.name}
+                            fill
+                            className="object-cover"
+                            sizes="36px"
+                          />
                         </div>
                       ))}
                     </div>
@@ -149,7 +180,7 @@ export default function RendezVousPage() {
                         <span className="ml-1 text-sm font-semibold text-warm-800">4.9/5</span>
                       </div>
                       <p className="text-xs text-warm-500">
-                        +150 entreprises ont déjà fait leur audit
+                        +1 000 entreprises ont déjà fait leur audit
                       </p>
                     </div>
                   </div>
@@ -181,18 +212,50 @@ export default function RendezVousPage() {
           </div>
         </section>
 
-        {/* ═══════════════════════ TRUST STATS ═══════════════════════ */}
-        <section className="border-y border-warm-200 bg-white px-4 sm:px-6 py-10">
-          <Reveal>
-            <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {TRUST_ITEMS.map((item) => (
-                <div key={item.label} className="text-center">
-                  <p className="text-3xl font-semibold text-warm-900">{item.value}</p>
-                  <p className="mt-1 text-sm text-warm-500">{item.label}</p>
-                </div>
+        {/* ═══════════════════════ TESTIMONIALS ═══════════════════════ */}
+        <section className="border-t border-warm-200 bg-warm-50 px-4 sm:px-6 py-14 sm:py-20">
+          <div className="mx-auto max-w-7xl">
+            <Reveal>
+              <div className="mb-10 text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-accent">Témoignages</p>
+                <h2 className="mt-2 text-heading-lg text-warm-900">
+                  Ce que disent nos clients
+                </h2>
+              </div>
+            </Reveal>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {TESTIMONIALS.map((t, i) => (
+                <Reveal key={t.name} delay={i * 0.08}>
+                  <div className="flex h-full flex-col rounded-2xl border border-warm-200 bg-white p-6 shadow-soft">
+                    <div className="mb-4 flex items-center gap-1">
+                      {Array.from({ length: t.stars }).map((_, s) => (
+                        <RiStarFill key={s} className="h-4 w-4 text-accent" />
+                      ))}
+                    </div>
+                    <p className="flex-1 text-sm leading-relaxed text-warm-700">
+                      &ldquo;{t.text}&rdquo;
+                    </p>
+                    <div className="mt-5 flex items-center gap-3">
+                      <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-warm-200">
+                        <Image
+                          src={t.avatar}
+                          alt={t.name}
+                          fill
+                          className="object-cover"
+                          sizes="40px"
+                        />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-warm-900">{t.name}</p>
+                        <p className="text-xs text-warm-500">{t.role}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
-          </Reveal>
+          </div>
         </section>
 
       </main>

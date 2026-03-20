@@ -412,7 +412,7 @@ function ReportContent() {
             <div className="absolute bottom-0 left-0 w-56 h-56 bg-accent/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
 
             <div className="relative text-center max-w-xl mx-auto">
-              <h2 className="text-heading-xl sm:text-display text-white mb-4">
+              <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white mb-4">
                 Prêt à dominer <span className="serif-accent">Google Maps</span> ?
               </h2>
               <p className="text-body-lg text-white/50 mb-8">

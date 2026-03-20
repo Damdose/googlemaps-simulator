@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import WhatsAppWidget from "@/components/Chatbot";
 import CookieBanner from "@/components/CookieBanner";
 import ExitIntentPopup from "@/components/ExitIntentPopup";
+import ScrollProgress from "@/components/ScrollProgress";
 import "./globals.css";
 
 const instrumentSerif = Instrument_Serif({ weight: "400", subsets: ["latin"], style: ["normal", "italic"], variable: "--font-instrument-serif" });
@@ -33,6 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${GeistSans.variable} ${instrumentSerif.variable} font-sans antialiased`}>
         <div className="min-h-screen bg-warm-bg text-warm-900">
+          <ScrollProgress />
           <Header />
           {children}
           <Footer />

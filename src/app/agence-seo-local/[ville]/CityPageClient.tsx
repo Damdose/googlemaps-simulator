@@ -337,7 +337,7 @@ export default function CityPageClient({ city, otherCities }: CityPageClientProp
                     </ul>
                     <Link
                       href={service.href}
-                      className={`mt-6 w-full justify-center ${service.highlighted ? 'btn-accent' : 'btn-primary'}`}
+                      className="mt-6 w-full justify-center btn-primary"
                     >
                       {service.highlighted ? 'Prendre rendez-vous' : 'En savoir plus'}
                     </Link>
@@ -540,7 +540,7 @@ export default function CityPageClient({ city, otherCities }: CityPageClientProp
       <section className="bg-warm-900 px-4 py-14 sm:px-6 sm:py-24">
         <Reveal>
           <div className="mx-auto max-w-4xl text-center">
-            <h2 className="text-balance text-heading-xl text-white sm:text-display">
+            <h2 className="text-balance text-heading-xl sm:text-display md:text-display-lg text-white">
               Prêt à dominer Google Maps à{' '}
               <span className="serif-accent">{city.name}</span> ?
             </h2>

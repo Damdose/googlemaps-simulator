@@ -15,7 +15,6 @@ const SERVICE_ITEMS: { href: string; label: string; description: string; icon: F
   { href: '/services/audit-gratuit', label: 'Audit Gratuit', description: 'Gratuit · Score, heatmap, concurrents & recommandations IA', icon: 'chart-bar' },
   { href: '/services/optimisation-fiche-google', label: 'Optimisation Fiche Google', description: '500€ one-shot · Fiche 100% optimisée pour convertir', icon: 'pencil' },
   { href: '/services/boost-avis-experience', label: 'Boost Avis Expérience', description: 'Sur devis · De vrais avis par de vrais clients', icon: 'check-badge' },
-  { href: '/services/google-ads-local', label: 'Google Ads Local', description: 'Dès 400€/mois · Campagnes Search & LSA locales', icon: 'megaphone' },
 ];
 
 const RESOURCE_ITEMS: { href: string; label: string; description: string; icon: FreehandIconName }[] = [

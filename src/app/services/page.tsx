@@ -1,11 +1,13 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import {
   CheckCircle,
   ArrowRight,
+  CaretDown,
+  Star,
 } from '@phosphor-icons/react';
 import FreehandIcon from '@/components/FreehandIcon';
 
@@ -210,6 +212,165 @@ const JOURNEY_STEPS = [
   },
 ];
 
+const CLIENT_LOGOS = [
+  { name: 'Brand 05', logo: '/logos/brand-logo-05.svg' },
+  { name: 'Brand 09', logo: '/logos/brand-logo-09.svg' },
+  { name: 'Brand 06', logo: '/logos/brand-logo-06.svg' },
+  { name: 'Invarion', logo: '/logos/invarion.svg' },
+  { name: 'Baincroft', logo: '/logos/baincroft.svg' },
+  { name: 'Vector', logo: '/logos/vector-1.svg' },
+  { name: 'Givonni', logo: '/logos/givonni.svg' },
+  { name: 'Morance', logo: '/logos/morance.svg' },
+  { name: 'Eisner Sterling', logo: '/logos/eisnersterling.svg' },
+  { name: 'Marcopierre', logo: '/logos/marcopierre.svg' },
+  { name: 'Hermosa', logo: '/logos/hermosa.svg' },
+];
+
+const TESTIMONIALS_SERVICES = [
+  {
+    name: 'Sophie M.',
+    role: 'Gérante de restaurant',
+    company: 'Paris 11e',
+    avatar: '👩🏻',
+    text: 'Depuis l\'optimisation de notre fiche Google, on reçoit 3x plus d\'appels. Les clients nous trouvent facilement et les avis ont boosté notre crédibilité.',
+    rating: 5,
+  },
+  {
+    name: 'Thomas R.',
+    role: 'Directeur d\'hôtel',
+    company: 'Marseille',
+    avatar: '👨🏽',
+    text: 'L\'audit gratuit nous a ouvert les yeux sur tout ce qu\'on ratait. En 2 semaines après l\'optimisation, notre fiche est passée de la page 2 à la 1ère position.',
+    rating: 5,
+  },
+  {
+    name: 'Nadia K.',
+    role: 'Fondatrice de studio bien-être',
+    company: 'Lyon',
+    avatar: '👩🏾',
+    text: 'Le programme Boost Avis a transformé notre réputation en ligne. On est passé de 3.8 à 4.6 étoiles en 3 mois. Les nouveaux clients citent nos avis Google.',
+    rating: 5,
+  },
+];
+
+const FAQ_ITEMS_SERVICES = [
+  {
+    q: 'Combien de temps faut-il pour voir des résultats ?',
+    a: 'L\'audit est instantané (30 secondes). L\'optimisation de fiche Google est livrée en 5 jours avec des premiers résultats visibles sous 1 à 2 semaines. Pour le Boost Avis, les premiers avis sont publiés dès le 1er mois. Les campagnes Ads génèrent des leads dès la première semaine.',
+  },
+  {
+    q: 'Est-ce que l\'audit gratuit est vraiment sans engagement ?',
+    a: 'Oui, 100% gratuit et sans engagement. Vous recevez un rapport complet avec votre score d\'optimisation, vos positions sur Google Maps, une analyse concurrentielle et des recommandations personnalisées. Aucune carte bancaire n\'est demandée.',
+  },
+  {
+    q: 'Les avis du programme Boost sont-ils conformes aux CGU Google ?',
+    a: 'Absolument. Nos ambassadeurs visitent réellement votre établissement, vivent une expérience authentique et rédigent un avis honnête et détaillé. C\'est 100% conforme aux conditions d\'utilisation de Google.',
+  },
+  {
+    q: 'Puis-je combiner plusieurs services ?',
+    a: 'Oui, et c\'est même recommandé. La plupart de nos clients commencent par l\'audit gratuit, enchaînent avec l\'optimisation de fiche, puis activent le Boost Avis ou les Google Ads selon leurs objectifs. Chaque offre s\'intègre dans une stratégie cohérente.',
+  },
+  {
+    q: 'Y a-t-il un engagement de durée ?',
+    a: 'L\'audit est sans engagement. L\'optimisation fiche est un one-shot (pas d\'abonnement). Le Boost Avis fonctionne sur candidature avec une période de test. Les Google Ads sont sans engagement, vous pouvez arrêter à tout moment.',
+  },
+  {
+    q: 'Comment mesurez-vous les résultats ?',
+    a: 'Chaque service inclut un reporting clair : score d\'optimisation avant/après, évolution des positions sur Google Maps, nombre d\'avis publiés, coût par lead pour les Ads. On suit des KPI business, pas des vanity metrics.',
+  },
+];
+
+function Sticker({
+  children,
+  className = '',
+  rotate = 0,
+  float = true,
+  floatDuration = 3,
+  floatStyle = 'float',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  rotate?: number;
+  float?: boolean;
+  floatDuration?: number;
+  floatStyle?: 'float' | 'bob' | 'sway' | 'pulse';
+}) {
+  const floatAnimations = {
+    float: { y: [0, -14, 0], x: [0, 6, 0] },
+    bob: { y: [0, -8, 2, -8, 0], x: [0, -3, 0, 3, 0] },
+    sway: { y: [0, -4, 0], x: [0, 10, 0, -10, 0], rotate: [rotate - 5, rotate + 5, rotate - 5] },
+    pulse: { y: [0, -10, 0], scale: [1, 1.08, 1] },
+  };
+
+  const floatTransitions: Record<string, Record<string, unknown>> = {
+    float: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration * 1.4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
+    },
+    bob: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration * 1.6, repeat: Infinity, ease: 'easeInOut', delay: 0.7 },
+    },
+    sway: {
+      y: { duration: floatDuration * 1.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      rotate: { duration: floatDuration * 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+    },
+    pulse: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      scale: { duration: floatDuration * 1.3, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+    },
+  };
+
+  return (
+    <motion.span
+      className={`inline-block cursor-default select-none drop-shadow-lg ${className}`}
+      initial={{ opacity: 0, scale: 0, rotate: rotate - 20 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        rotate,
+        ...(float ? floatAnimations[floatStyle] : {}),
+      }}
+      transition={{
+        opacity: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        scale: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        rotate: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        ...(float ? floatTransitions[floatStyle] : {}),
+      }}
+      whileHover={{ scale: 1.3, rotate: rotate + 10 }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-warm-200/60 last:border-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-3 sm:gap-4 py-4 sm:py-6 text-left"
+      >
+        <span className="text-sm sm:text-[17px] font-semibold text-warm-900">{q}</span>
+        <CaretDown
+          weight="bold"
+          className={`h-5 w-5 shrink-0 text-warm-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      <motion.div
+        initial={false}
+        animate={{ height: open ? 'auto' : 0, opacity: open ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="overflow-hidden"
+      >
+        <p className="pb-4 sm:pb-6 text-body-sm leading-relaxed text-warm-500">{a}</p>
+      </motion.div>
+    </div>
+  );
+}
+
 function Reveal({
   children,
   className = '',
@@ -238,9 +399,13 @@ function Reveal({
 export default function ServicesPage() {
   return (
     <main>
-      {/* ── Hero ── */}
-      <section className="px-4 sm:px-6 pb-6 sm:pb-8 pt-10 sm:pt-16 md:pt-20">
-        <div className="mx-auto max-w-4xl text-center">
+      {/* ── 1. Hero ── */}
+      <section className="relative overflow-hidden px-4 sm:px-6 pb-6 sm:pb-8 pt-10 sm:pt-16 md:pt-20">
+        <Sticker className="absolute left-[4%] top-[12%] text-4xl sm:text-5xl md:text-6xl lg:text-7xl hidden sm:inline-block" rotate={-12} floatDuration={3.2} floatStyle="float">🗺️</Sticker>
+        <Sticker className="absolute right-[5%] top-[8%] text-4xl sm:text-5xl md:text-6xl lg:text-7xl hidden sm:inline-block" rotate={8} floatDuration={2.8} floatStyle="pulse">⭐</Sticker>
+        <Sticker className="absolute right-[8%] bottom-[10%] text-4xl sm:text-5xl md:text-6xl lg:text-7xl hidden sm:inline-block" rotate={-8} floatDuration={3} floatStyle="sway">📈</Sticker>
+
+        <div className="relative z-10 mx-auto max-w-4xl text-center">
           <Reveal>
             <p className="section-label mb-4 justify-center">Nos services</p>
             <h1 className="text-balance text-heading-xl sm:text-display text-warm-900">
@@ -255,10 +420,26 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Parcours client ── */}
-      <section className="px-4 sm:px-6 py-10 sm:py-16">
+      {/* ── 2. Logo défilant ── */}
+      <section className="overflow-hidden border-y border-warm-200 bg-white py-4 sm:py-6">
+        <div className="logos-marquee flex items-center gap-12 sm:gap-16">
+          {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
+            <div key={i} className="flex h-7 w-24 shrink-0 items-center justify-center sm:h-9 sm:w-32">
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 3. Comment ça marche ── */}
+      <section className="bg-warm-50 px-4 sm:px-6 py-10 sm:py-16">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-14 text-center">
+            <p className="section-label mb-4 justify-center">Comment ça marche</p>
             <h2 className="text-heading-lg sm:text-heading-xl text-warm-900">
               Un parcours en <span className="serif-accent">4 étapes</span>
             </h2>
@@ -296,10 +477,11 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Détail des offres ── */}
+      {/* ── 4. Pricing – Détail des offres ── */}
       <section className="px-4 sm:px-6 py-10 sm:py-16">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-14 text-center">
+            <p className="section-label mb-4 justify-center">Pricing</p>
             <h2 className="text-heading-lg sm:text-heading-xl text-warm-900">
               Nos <span className="serif-accent">offres</span> en détail
             </h2>
@@ -324,7 +506,6 @@ export default function ServicesPage() {
                   )}
 
                   <div className="relative grid lg:grid-cols-5">
-                    {/* Left: info */}
                     <div className="lg:col-span-3 p-6 sm:p-9">
                       <div className="flex flex-wrap items-center gap-3 mb-6">
                         <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-warm-100 text-warm-700">
@@ -357,7 +538,6 @@ export default function ServicesPage() {
                         {service.description}
                       </p>
 
-                      {/* Price */}
                       <div className="mt-6">
                         {service.price === 'Sur devis' ? (
                           <span className="text-2xl sm:text-3xl font-extrabold tracking-tight text-warm-900">
@@ -381,7 +561,6 @@ export default function ServicesPage() {
                         )}
                       </div>
 
-                      {/* Stats */}
                       <div className="mt-6 flex flex-wrap gap-6">
                         {service.stats.map((stat) => (
                           <div key={stat.label}>
@@ -393,17 +572,16 @@ export default function ServicesPage() {
                         ))}
                       </div>
 
-                      {/* CTAs */}
                       <div className="mt-8 flex flex-wrap items-center gap-3">
                         <Link
                           href={service.ctaHref}
-                          className={service.highlighted ? 'btn-accent' : 'btn-primary'}
+                          className="btn-primary"
                         >
                           {service.cta}
                         </Link>
                         <Link
                           href={service.detailHref}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-warm-200 bg-warm-50 px-5 py-2 text-[13px] font-medium text-warm-600 transition-colors hover:bg-warm-100 hover:text-warm-900"
+                          className="btn-secondary gap-1.5"
                         >
                           En savoir plus
                           <ArrowRight weight="bold" className="h-3.5 w-3.5" />
@@ -411,7 +589,6 @@ export default function ServicesPage() {
                       </div>
                     </div>
 
-                    {/* Right: features */}
                     <div className="lg:col-span-2 border-t lg:border-t-0 lg:border-l border-warm-200/60 p-6 sm:p-9 flex flex-col justify-center">
                       <p className="mb-5 text-[10px] font-bold uppercase tracking-[0.2em] text-warm-400">
                         Ce qu&apos;on fait
@@ -439,8 +616,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Comparatif rapide ── */}
-      <section className="px-4 sm:px-6 py-10 sm:py-16">
+      {/* ── 4b. Comparatif rapide ── */}
+      <section className="bg-warm-100 px-4 sm:px-6 py-10 sm:py-16">
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 sm:mb-14 text-center">
             <h2 className="text-heading-lg sm:text-heading-xl text-warm-900">
@@ -514,10 +691,11 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── Pourquoi Siva ── */}
+      {/* ── 5. Avantages – Pourquoi Siva ── */}
       <section className="px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-16 max-w-3xl">
+            <p className="section-label mb-4">Avantages</p>
             <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
               Pourquoi choisir <span className="serif-accent">Siva</span> ?
             </h2>
@@ -544,11 +722,67 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── 6. Social proof ── */}
+      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-7xl">
+          <Reveal className="mb-10 sm:mb-16 text-center">
+            <p className="section-label mb-4 justify-center">Ils nous font confiance</p>
+            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+              Ce que nos clients <span className="serif-accent">en disent.</span>
+            </h2>
+          </Reveal>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {TESTIMONIALS_SERVICES.map((t, i) => (
+              <Reveal key={t.name} delay={i * 0.08}>
+                <div className="card-hover flex h-full flex-col justify-between bg-white p-6">
+                  <div>
+                    <div className="mb-3 flex gap-0.5">
+                      {Array.from({ length: t.rating }).map((_, j) => (
+                        <Star key={j} weight="fill" className="h-4 w-4 text-[#FBBC04]" />
+                      ))}
+                    </div>
+                    <p className="text-[15px] leading-relaxed text-warm-600">&ldquo;{t.text}&rdquo;</p>
+                  </div>
+                  <div className="mt-6 flex items-center gap-3 border-t border-warm-100 pt-5">
+                    <span className="text-2xl">{t.avatar}</span>
+                    <div>
+                      <p className="text-sm font-semibold text-warm-900">{t.name}</p>
+                      <p className="text-xs text-warm-500">{t.role} · {t.company}</p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 7. FAQ ── */}
+      <section className="px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="mb-8 sm:mb-12 text-center">
+            <p className="section-label mb-4 justify-center">FAQ</p>
+            <h2 className="text-heading-xl text-warm-900">
+              Questions <span className="serif-accent">fréquentes</span>
+            </h2>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-warm-200 bg-white px-4 sm:px-6 shadow-soft md:px-8">
+              {FAQ_ITEMS_SERVICES.map((item) => (
+                <FAQItem key={item.q} q={item.q} a={item.a} />
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── CTA final ── */}
       <section className="rounded-t-[1.5rem] sm:rounded-t-[2.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-heading-xl text-white sm:text-display">
+            <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
               Prêt à <span className="serif-accent text-accent">passer à l&apos;action</span> ?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">

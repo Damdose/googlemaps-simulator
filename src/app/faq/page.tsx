@@ -218,7 +218,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
         onClick={() => setOpen(!open)}
         className="group flex w-full items-center justify-between gap-4 py-4 sm:py-5 text-left"
       >
-        <span className="text-sm sm:text-[1.0625rem] font-medium leading-snug text-warm-800 transition-colors group-hover:text-warm-900">
+        <span className="text-sm font-medium text-warm-800 transition-colors group-hover:text-warm-900 sm:text-lg">
           {question}
         </span>
         <CaretDown
@@ -235,7 +235,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="pb-4 sm:pb-5 leading-relaxed text-warm-600">{answer}</p>
+            <p className="pb-4 text-sm leading-relaxed text-warm-600 sm:pb-6 sm:text-base">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -251,7 +251,7 @@ function CategorySection({ category }: { category: FAQCategory }) {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15">
             <FreehandIcon name={category.icon} size={20} className="text-accent-dark" />
           </div>
-          <h2 className="text-heading-lg text-warm-900">{category.label}</h2>
+          <h2 className="text-heading-lg sm:text-heading-xl text-warm-900">{category.label}</h2>
         </div>
         <div className="rounded-xl border border-warm-200 bg-white px-4 py-1 shadow-soft sm:rounded-2xl sm:px-7">
           {category.items.map((item, i) => (
@@ -392,7 +392,7 @@ export default function FAQPage() {
       <section className="rounded-t-[1.5rem] sm:rounded-t-[2.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-heading-xl text-white">
+            <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
               Vous avez d&apos;autres questions ?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">

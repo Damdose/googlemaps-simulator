@@ -261,7 +261,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
 
               {/* CTA in-article */}
               <div className="my-12 rounded-2xl sm:rounded-3xl bg-warm-900 p-6 sm:p-10 text-center">
-                <h3 className="text-heading text-white">
+                <h3 className="text-heading-lg sm:text-heading-xl text-white">
                   Prêt à booster votre visibilité <span className="serif-accent text-accent">locale</span> ?
                 </h3>
                 <p className="mx-auto mt-3 max-w-md text-sm text-white/60">
@@ -286,7 +286,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
                   <p className="text-base font-semibold text-warm-900">{post.author.name}</p>
                   <p className="text-sm text-warm-500">{post.author.role}</p>
                   <p className="mt-2 text-sm text-warm-500 leading-relaxed">
-                    Expert en SEO local et visibilité Google Maps. Accompagne plus de 500 commerces dans leur stratégie de référencement local.
+                    Expert en SEO local et visibilité Google Maps. Accompagne plus de 1 000 commerces dans leur stratégie de référencement local.
                   </p>
                 </div>
               </div>
@@ -367,7 +367,7 @@ export default function BlogPostClient({ post, relatedPosts }: BlogPostClientPro
         {/* CTA footer */}
         <section className="rounded-t-[1.5rem] sm:rounded-t-[2.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-heading-xl text-white">
+            <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
               Passez de la théorie à la <span className="serif-accent text-accent">pratique</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">

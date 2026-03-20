@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import {
   RiStarFill,
   RiStarLine,
@@ -41,9 +41,9 @@ const RESULTS_SHOWCASE = [
     highlightIndex: 0,
     timeframe: '4 mois',
     listings: [
-      { name: 'Restaurant Le Comptoir', rating: 4.7, reviews: 186, category: 'Restaurant italien', address: '42 Rue Oberkampf, Paris', hours: 'Ouvert · Ferme à 23:00', highlighted: true, image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Trattoria Bella', rating: 4.5, reviews: 203, category: 'Restaurant italien', address: '15 Rue de la Roquette, Paris', hours: 'Ouvert · Ferme à 22:30', highlighted: false, image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Il Palazzo', rating: 4.3, reviews: 147, category: 'Restaurant italien', address: '8 Bd Voltaire, Paris', hours: 'Ouvert · Ferme à 23:00', highlighted: false, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Votre Restaurant', rating: 4.7, reviews: 186, category: 'Restaurant italien', address: 'Paris 11e', hours: 'Ouvert · Ferme à 23:00', highlighted: true, image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent A', rating: 4.5, reviews: 203, category: 'Restaurant italien', address: 'Paris 11e', hours: 'Ouvert · Ferme à 22:30', highlighted: false, image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent B', rating: 4.3, reviews: 147, category: 'Restaurant italien', address: 'Paris 11e', hours: 'Ouvert · Ferme à 23:00', highlighted: false, image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=80&h=80&fit=crop&crop=center' },
     ],
   },
   {
@@ -51,9 +51,9 @@ const RESULTS_SHOWCASE = [
     highlightIndex: 0,
     timeframe: '3 mois',
     listings: [
-      { name: 'Cabinet Dentaire Rivière', rating: 4.9, reviews: 112, category: 'Dentiste', address: '28 Ave Mozart, Paris', hours: 'Ouvert · Ferme à 19:00', highlighted: true, image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Dr Martin - Dentiste', rating: 4.6, reviews: 89, category: 'Dentiste', address: '3 Rue de Passy, Paris', hours: 'Fermé · Ouvre à 09:00', highlighted: false, image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Centre Dentaire Auteuil', rating: 4.4, reviews: 201, category: 'Dentiste', address: '56 Rue d\'Auteuil, Paris', hours: 'Ouvert · Ferme à 18:30', highlighted: false, image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Votre Cabinet', rating: 4.9, reviews: 112, category: 'Dentiste', address: 'Paris 16e', hours: 'Ouvert · Ferme à 19:00', highlighted: true, image: 'https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent A', rating: 4.6, reviews: 89, category: 'Dentiste', address: 'Paris 16e', hours: 'Fermé · Ouvre à 09:00', highlighted: false, image: 'https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent B', rating: 4.4, reviews: 201, category: 'Dentiste', address: 'Paris 16e', hours: 'Ouvert · Ferme à 18:30', highlighted: false, image: 'https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=80&h=80&fit=crop&crop=center' },
     ],
   },
   {
@@ -61,9 +61,9 @@ const RESULTS_SHOWCASE = [
     highlightIndex: 2,
     timeframe: '5 mois',
     listings: [
-      { name: 'Speedy Boulogne', rating: 3.9, reviews: 312, category: 'Garage automobile', address: '12 Rue du Point du Jour', hours: 'Ouvert · Ferme à 19:00', highlighted: false, image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Norauto Boulogne', rating: 4.0, reviews: 178, category: 'Garage automobile', address: '45 Ave Édouard Vaillant', hours: 'Ouvert · Ferme à 19:30', highlighted: false, image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=80&h=80&fit=crop&crop=center' },
-      { name: 'Garage Auto Prestige', rating: 4.8, reviews: 89, category: 'Garage automobile', address: '7 Rue de Silly, Boulogne', hours: 'Ouvert · Ferme à 18:00', highlighted: true, image: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent A', rating: 3.9, reviews: 312, category: 'Garage automobile', address: 'Boulogne-Billancourt', hours: 'Ouvert · Ferme à 19:00', highlighted: false, image: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Concurrent B', rating: 4.0, reviews: 178, category: 'Garage automobile', address: 'Boulogne-Billancourt', hours: 'Ouvert · Ferme à 19:30', highlighted: false, image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=80&h=80&fit=crop&crop=center' },
+      { name: 'Votre Garage', rating: 4.8, reviews: 89, category: 'Garage automobile', address: 'Boulogne-Billancourt', hours: 'Ouvert · Ferme à 18:00', highlighted: true, image: 'https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=80&h=80&fit=crop&crop=center' },
     ],
   },
 ];
@@ -225,7 +225,6 @@ const TESTIMONIALS_ROW1 = [
   {
     name: 'Marie L.',
     role: 'Restauratrice',
-    placeName: 'Le Bouillon Chartier',
     city: 'Paris',
     avatar: 'https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=120&h=120&fit=crop&crop=center',
     text: 'En 3 mois, on est passé de la 12e à la 2e position sur "restaurant italien" dans notre quartier. Les appels ont doublé. L\'équipe Siva est redoutablement efficace et toujours disponible.',
@@ -234,7 +233,6 @@ const TESTIMONIALS_ROW1 = [
   {
     name: 'Thomas B.',
     role: 'Dentiste',
-    placeName: 'Centre Dentaire Bellecour',
     city: 'Lyon',
     avatar: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=120&h=120&fit=crop&crop=center',
     text: 'La heatmap m\'a ouvert les yeux. Je ne savais même pas que je n\'apparaissais pas dans la moitié de ma zone ! Aujourd\'hui je suis n°1 sur toutes mes requêtes principales. Le ROI est énorme.',
@@ -243,7 +241,6 @@ const TESTIMONIALS_ROW1 = [
   {
     name: 'Sophie R.',
     role: 'Avocate',
-    placeName: 'Cabinet Voltaire Avocats',
     city: 'Bordeaux',
     avatar: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=120&h=120&fit=crop&crop=center',
     text: 'Rapport impressionnant dès l\'audit gratuit. J\'ai été convaincue de passer à l\'accompagnement complet et j\'ai gagné 45% de visibilité en 2 mois. Professionnels et transparents.',
@@ -252,7 +249,6 @@ const TESTIMONIALS_ROW1 = [
   {
     name: 'Julien D.',
     role: 'Plombier',
-    placeName: 'Plomberie du Vieux-Port',
     city: 'Marseille',
     avatar: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=120&h=120&fit=crop&crop=center',
     text: 'Avant Siva, on n\'existait pas sur Google Maps. En 6 semaines, on était dans le top 3 sur "plombier urgence" dans toute notre zone. Les appels ont explosé.',
@@ -263,8 +259,7 @@ const TESTIMONIALS_ROW1 = [
 const TESTIMONIALS_ROW2 = [
   {
     name: 'David K.',
-    role: 'Gérant',
-    placeName: 'Garage du Capitole',
+    role: 'Gérant de garage',
     city: 'Toulouse',
     avatar: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=120&h=120&fit=crop&crop=center',
     text: 'Sandro et son équipe comprennent parfaitement les enjeux d\'un commerce local. Ils ont triplé nos avis Google en 4 mois et on reçoit maintenant 3x plus de demandes de devis.',
@@ -273,7 +268,6 @@ const TESTIMONIALS_ROW2 = [
   {
     name: 'Camille M.',
     role: 'Opticienne',
-    placeName: 'Optique Saint-Germain',
     city: 'Nantes',
     avatar: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?w=120&h=120&fit=crop&crop=center',
     text: 'L\'approche data-driven de Siva est bluffante. On voit exactement ce qui marche, zone par zone. Nos concurrents nous demandent comment on fait. Je recommande à 1000%.',
@@ -282,16 +276,14 @@ const TESTIMONIALS_ROW2 = [
   {
     name: 'Lucas P.',
     role: 'Boulanger',
-    placeName: 'Boulangerie Maison Kayser',
     city: 'Strasbourg',
     avatar: 'https://images.unsplash.com/photo-1528698827591-e19cef51a699?w=120&h=120&fit=crop&crop=center',
     text: 'On hésitait à investir dans le digital. Siva nous a montré le potentiel qu\'on perdait chaque mois. Résultat : +60% de nouveaux clients en 90 jours. Le meilleur investissement qu\'on ait fait.',
     rating: 5,
   },
   {
-    name: 'Dr Leroy',
+    name: 'Antoine L.',
     role: 'Médecin',
-    placeName: 'Cabinet Médical Haussmann',
     city: 'Paris',
     avatar: 'https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?w=120&h=120&fit=crop&crop=center',
     text: 'En tant que professionnel de santé, je ne connaissais rien au référencement. Siva a tout pris en main. Mon cabinet apparaît maintenant en 1ère position sur 80% de ma zone.',
@@ -377,32 +369,26 @@ function Reveal({
   variant?: RevealVariant;
 }) {
   const v = REVEAL_VARIANTS[variant];
+  const [fallbackVisible, setFallbackVisible] = useState(false);
+
+  // Fallback : si whileInView ne se déclenche pas (bug IntersectionObserver, etc.),
+  // le contenu devient visible après 800ms pour éviter une page blanche
+  useEffect(() => {
+    const t = setTimeout(() => setFallbackVisible(true), 800 + delay * 500);
+    return () => clearTimeout(t);
+  }, [delay]);
 
   return (
     <motion.div
       initial={v.hidden}
       whileInView={v.visible}
-      viewport={{ once: true, margin: '-60px' }}
+      animate={fallbackVisible ? v.visible : undefined}
+      viewport={{ once: true, margin: '-60px', amount: 0.1 }}
       transition={{ duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] }}
       className={className}
     >
       {children}
     </motion.div>
-  );
-}
-
-function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
-
-  return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-[3px] z-[100] origin-left"
-      style={{
-        scaleX,
-        background: 'linear-gradient(90deg, #C8A84E, #F0C75E, #E8C060)',
-      }}
-    />
   );
 }
 
@@ -552,7 +538,6 @@ export default function HomePage() {
 
   return (
       <main>
-        <ScrollProgress />
         {/* ═══════════════════════ HERO ═══════════════════════ */}
         <section ref={heroRef} className="relative overflow-hidden px-4 pb-12 pt-10 sm:px-6 sm:pb-16 sm:pt-14 md:pb-24 md:pt-20">
           <motion.div style={{ y: heroY }} className="pointer-events-none absolute inset-0 -z-10">
@@ -647,7 +632,7 @@ export default function HomePage() {
             <Reveal className="mb-10 text-center sm:mb-16" variant="blur-in">
               <p className="section-label mb-3 justify-center sm:mb-4">Nos derniers résultats</p>
               <h2 className="text-balance text-heading-mobile font-light text-warm-900 sm:text-heading-xl md:text-display">
-                +150 fiches propulsées dans le top 3
+                +1 000 fiches propulsées dans le top 3
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-body-sm text-warm-500 sm:mt-4 sm:text-body-lg">
                 Pas des promesses — des positions. Voici ce qu&apos;on obtient pour nos clients.
@@ -1277,7 +1262,7 @@ export default function HomePage() {
             <Reveal className="mb-10 text-center sm:mb-16" variant="scale-up">
               <p className="section-label mb-3 justify-center sm:mb-4">Avis clients</p>
               <h2 className="text-balance text-heading-mobile font-light text-warm-900 sm:text-heading-xl md:text-display">
-                +150 entreprises accompagnées
+                +1 000 entreprises accompagnées
               </h2>
               <div className="mx-auto mt-3 inline-flex items-center justify-center gap-2 rounded-full border border-warm-200 bg-white px-3.5 py-2 shadow-soft sm:mt-4 sm:gap-3 sm:px-5 sm:py-2.5">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 272 92" className="h-4 w-auto shrink-0 sm:h-5">
@@ -1319,11 +1304,11 @@ export default function HomePage() {
                   <div className="mt-4 flex items-center gap-2.5 border-t border-warm-100 pt-4 sm:mt-6 sm:gap-3 sm:pt-5">
                     <img
                       src={t.avatar}
-                      alt={t.placeName}
+                      alt={t.name}
                       className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover sm:h-14 sm:w-14"
                     />
                     <div>
-                      <p className="text-xs font-semibold text-warm-900 sm:text-sm">{t.placeName}</p>
+                      <p className="text-xs font-semibold text-warm-900 sm:text-sm">{t.name}</p>
                       <p className="text-[11px] text-warm-500 sm:text-xs">{t.role} · {t.city}</p>
                     </div>
                   </div>
@@ -1353,11 +1338,11 @@ export default function HomePage() {
                   <div className="mt-4 flex items-center gap-2.5 border-t border-warm-100 pt-4 sm:mt-6 sm:gap-3 sm:pt-5">
                     <img
                       src={t.avatar}
-                      alt={t.placeName}
+                      alt={t.name}
                       className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover sm:h-14 sm:w-14"
                     />
                     <div>
-                      <p className="text-xs font-semibold text-warm-900 sm:text-sm">{t.placeName}</p>
+                      <p className="text-xs font-semibold text-warm-900 sm:text-sm">{t.name}</p>
                       <p className="text-[11px] text-warm-500 sm:text-xs">{t.role} · {t.city}</p>
                     </div>
                   </div>
@@ -1459,7 +1444,7 @@ export default function HomePage() {
                   <span className="serif-accent text-accent">Google Maps</span> ?
                 </h2>
                 <p className="mt-4 max-w-xl text-body-sm text-white/60 sm:mt-6 sm:text-body-lg">
-                  Rejoignez +150 entreprises locales qui nous font confiance pour dominer Google Maps.
+                  Rejoignez +1 000 entreprises locales qui nous font confiance pour dominer Google Maps.
                 </p>
               </div>
 

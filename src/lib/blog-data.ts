@@ -51,7 +51,7 @@ export const BLOG_POSTS: BlogPost[] = [
         id: 'introduction',
         title: 'Introduction',
         content: `<p>Votre fiche Google Business Profile (GBP) est souvent le <strong>premier point de contact</strong> entre votre entreprise et un client potentiel. En 2026, 87% des consommateurs utilisent Google pour évaluer un commerce local avant de s'y rendre. Pourtant, la majorité des fiches sont mal optimisées et passent à côté d'un flux massif de clients.</p>
-<p>Dans ce guide, nous allons détailler les <strong>10 étapes concrètes</strong> qui vous permettront de transformer votre fiche en véritable aimant à clients. Chaque étape est basée sur notre expérience avec plus de 500 commerces locaux accompagnés.</p>`,
+<p>Dans ce guide, nous allons détailler les <strong>10 étapes concrètes</strong> qui vous permettront de transformer votre fiche en véritable aimant à clients. Chaque étape est basée sur notre expérience avec plus de 1 000 commerces locaux accompagnés.</p>`,
       },
       {
         id: 'choisir-categories',
@@ -503,7 +503,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         id: 'introduction',
         title: 'Introduction',
-        content: `<p>Après avoir audité plus de 500 fiches Google Business Profile, nous avons identifié <strong>7 erreurs récurrentes</strong> qui reviennent chez la grande majorité des commerces. Ces erreurs semblent anodines, mais elles ont un impact direct sur votre visibilité et votre chiffre d'affaires.</p>
+        content: `<p>Après avoir audité plus de 1 000 fiches Google Business Profile, nous avons identifié <strong>7 erreurs récurrentes</strong> qui reviennent chez la grande majorité des commerces. Ces erreurs semblent anodines, mais elles ont un impact direct sur votre visibilité et votre chiffre d'affaires.</p>
 <p>La bonne nouvelle ? Elles sont toutes <strong>corrigeables en quelques minutes</strong>. Voici comment les identifier et les résoudre.</p>`,
       },
       {

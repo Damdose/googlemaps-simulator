@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, useInView } from 'framer-motion';
@@ -149,24 +149,21 @@ const STATS = [
 const TESTIMONIALS = [
   {
     name: 'Sophie R.',
-    role: 'Avocate',
-    place: 'Cabinet Voltaire Avocats, Bordeaux',
+    role: 'Avocate · Bordeaux',
     avatar: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=120&h=120&fit=crop&crop=center',
     text: 'L\'audit m\'a ouvert les yeux. Je ne savais pas que ma fiche était si mal optimisée. Les recommandations étaient claires et actionnables. J\'ai gagné 45% de visibilité en 2 mois.',
     rating: 5,
   },
   {
-    name: 'Dr Leroy',
-    role: 'Médecin',
-    place: 'Cabinet Médical Haussmann, Paris',
+    name: 'Antoine L.',
+    role: 'Médecin · Paris',
     avatar: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=120&h=120&fit=crop&crop=center',
     text: 'Le rapport d\'audit est impressionnant de précision. La heatmap m\'a montré exactement les zones où je n\'apparaissais pas. Maintenant je suis visible partout dans mon quartier.',
     rating: 5,
   },
   {
     name: 'Camille M.',
-    role: 'Opticienne',
-    place: 'Optique Saint-Germain, Nantes',
+    role: 'Opticienne · Nantes',
     avatar: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=120&h=120&fit=crop&crop=center',
     text: 'J\'ai lancé l\'audit par curiosité et j\'ai été bluffée. En 30 secondes, j\'ai compris pourquoi mes concurrents me dépassaient. L\'IA a proposé des améliorations que je n\'aurais jamais trouvées seule.',
     rating: 5,
@@ -209,8 +206,34 @@ const INCLUDED = [
   'Analyse de visibilité IA',
 ];
 
+const FORM_FIELDS_CLASSES =
+  'w-full rounded-xl border border-warm-200 bg-warm-50 px-4 py-3 text-sm text-warm-800 outline-none transition-colors placeholder:text-warm-400 focus:border-accent focus:ring-2 focus:ring-accent/20';
+
 export default function AuditGratuitServicePage() {
   const router = useRouter();
+
+  const [formState, setFormState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [form, setForm] = useState({
+    businessName: '',
+    sector: '',
+    city: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    message: '',
+  });
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setFormState('sending');
+    setTimeout(() => setFormState('sent'), 1200);
+  }
 
   function handlePlaceSelect(place: PlaceResult) {
     const params = new URLSearchParams({
@@ -228,7 +251,7 @@ export default function AuditGratuitServicePage() {
   return (
     <main>
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden px-4 sm:px-6 pb-0 pt-10 sm:pt-16 md:pt-20">
+      <section className="relative overflow-hidden px-4 sm:px-6 pb-12 sm:pb-16 md:pb-24 pt-10 sm:pt-16 md:pt-20">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="hero-dot-grid absolute inset-0" />
           <div className="hero-glow" />
@@ -350,23 +373,24 @@ export default function AuditGratuitServicePage() {
           </div>
         </div>
 
-        <div className="mt-10 sm:mt-16 overflow-hidden border-t border-warm-200 bg-white/60 py-5 md:mt-20">
-          <div className="logos-marquee flex items-center gap-14 sm:gap-20">
-            {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
-              <div key={i} className="flex h-8 w-28 shrink-0 items-center justify-center sm:h-10 sm:w-36">
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
-                />
-              </div>
-            ))}
-          </div>
+      </section>
+
+      <section className="overflow-hidden border-y border-warm-200 bg-white py-4 sm:py-6">
+        <div className="logos-marquee flex items-center gap-12 sm:gap-16">
+          {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
+            <div key={i} className="flex h-6 w-20 shrink-0 items-center justify-center sm:h-7 sm:w-28">
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
+              />
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ── Problème ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
+      <section className="bg-warm-100 px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-5xl">
           <Reveal className="mb-10 sm:mb-16 text-center">
             <p className="section-label mb-4 justify-center">Le problème</p>
@@ -433,25 +457,34 @@ export default function AuditGratuitServicePage() {
       </section>
 
       {/* ── Process ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mb-8 sm:mb-12 text-center">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Comment ça marche</p>
-            <h2 className="text-heading-xl text-white sm:text-display">
+      <section id="concept" className="relative overflow-hidden bg-warm-900 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-accent/[0.04] blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl">
+          <Reveal className="mb-10 sm:mb-16 text-center">
+            <p className="section-label mb-4 justify-center !text-accent before:!bg-accent/40">Comment ça marche</p>
+            <h2 className="text-balance text-heading-xl text-white sm:text-display">
               3 étapes, 30 <span className="serif-accent text-accent">secondes.</span>
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-white/50">
+              Recherchez votre établissement, choisissez vos mots-clés, obtenez votre rapport. C&apos;est tout.
+            </p>
           </Reveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <Reveal key={step.num} delay={i * 0.1}>
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-accent">
-                    <FreehandIcon name={step.icon} size={24} />
+              <Reveal key={step.num} delay={i * 0.08}>
+                <div className="relative flex h-full flex-col items-start gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/20 hover:bg-white/[0.06]">
+                  <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-accent/20 to-accent/5 ring-1 ring-accent/10 text-accent">
+                    <FreehandIcon name={step.icon} size={44} />
                   </div>
-                  <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
-                  <h3 className="text-lg font-medium text-white">{step.title}</h3>
-                  <p className="mx-auto mt-2 max-w-[260px] text-sm leading-relaxed text-white/50">{step.desc}</p>
+                  <div>
+                    <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
+                    <h3 className="text-lg font-medium text-white">{step.title}</h3>
+                    <p className="mt-2 text-body-sm leading-relaxed text-white/50">{step.desc}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -460,7 +493,7 @@ export default function AuditGratuitServicePage() {
       </section>
 
       {/* ── Features ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
+      <section className="bg-warm-100 px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-16 text-center">
             <p className="section-label mb-4 justify-center">Ce que vous obtenez</p>
@@ -549,10 +582,10 @@ export default function AuditGratuitServicePage() {
                     <p className="text-[15px] leading-relaxed text-warm-600">&ldquo;{t.text}&rdquo;</p>
                   </div>
                   <div className="mt-6 flex items-center gap-3 border-t border-warm-100 pt-5">
-                    <img src={t.avatar} alt={t.place} className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover" />
+                    <img src={t.avatar} alt={t.name} className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover" />
                     <div>
                       <p className="text-sm font-semibold text-warm-900">{t.name}</p>
-                      <p className="text-xs text-warm-500">{t.role} @ {t.place}</p>
+                      <p className="text-xs text-warm-500">{t.role}</p>
                     </div>
                   </div>
                 </div>
@@ -593,7 +626,7 @@ export default function AuditGratuitServicePage() {
               </ul>
 
               <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Link href="/audit-gratuit" className="btn-accent">
+                <Link href="/audit-gratuit" className="btn-primary">
                   Lancer l&apos;audit gratuit
                 </Link>
               </div>
@@ -642,23 +675,141 @@ export default function AuditGratuitServicePage() {
         </div>
       </section>
 
+      {/* ── Formulaire ── */}
+      <section id="formulaire" className="px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="mb-8 sm:mb-12 text-center">
+            <p className="section-label mb-4 justify-center">Accompagnement expert</p>
+            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+              Vous voulez aller plus <span className="serif-accent">loin ?</span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-warm-500">
+              Lancez d&apos;abord votre audit gratuit, puis partagez vos résultats avec nos experts.
+              On vous recontacte sous 24h avec un plan d&apos;action personnalisé.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.12}>
+            <div className="rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 shadow-card lg:p-10">
+              {formState === 'sent' ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-positive/10">
+                    <CheckCircle weight="fill" className="h-8 w-8 text-positive" />
+                  </div>
+                  <h3 className="text-2xl font-medium text-warm-900">
+                    Demande envoyée !
+                  </h3>
+                  <p className="mt-3 max-w-sm text-sm text-warm-500">
+                    Merci pour votre message. Notre équipe vous recontacte sous 24h
+                    avec un plan d&apos;action adapté à vos résultats d&apos;audit.
+                  </p>
+                  <button
+                    onClick={() => {
+                      setFormState('idle');
+                      setForm({ businessName: '', sector: '', city: '', contactName: '', email: '', phone: '', message: '' });
+                    }}
+                    className="mt-8 text-sm font-semibold text-accent-dark transition-colors hover:underline"
+                  >
+                    Envoyer une autre demande
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="businessName" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Nom de l&apos;établissement *
+                      </label>
+                      <input id="businessName" name="businessName" type="text" required value={form.businessName} onChange={handleChange} placeholder="Mon établissement" className={FORM_FIELDS_CLASSES} />
+                    </div>
+                    <div>
+                      <label htmlFor="sector" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Secteur d&apos;activité *
+                      </label>
+                      <select id="sector" name="sector" required value={form.sector} onChange={handleChange} className={FORM_FIELDS_CLASSES}>
+                        <option value="">Sélectionnez</option>
+                        <option value="restaurant">Restaurant / Café</option>
+                        <option value="commerce">Commerce de détail</option>
+                        <option value="sante">Santé / Médical</option>
+                        <option value="beaute">Beauté / Bien-être</option>
+                        <option value="artisan">Artisan / Service</option>
+                        <option value="hotel">Hôtel / Hébergement</option>
+                        <option value="autre">Autre</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="city" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Ville *
+                      </label>
+                      <input id="city" name="city" type="text" required value={form.city} onChange={handleChange} placeholder="Paris" className={FORM_FIELDS_CLASSES} />
+                    </div>
+                    <div>
+                      <label htmlFor="contactName" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Nom du responsable *
+                      </label>
+                      <input id="contactName" name="contactName" type="text" required value={form.contactName} onChange={handleChange} placeholder="Jean Dupont" className={FORM_FIELDS_CLASSES} />
+                    </div>
+                  </div>
+
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Email *
+                      </label>
+                      <input id="email" name="email" type="email" required value={form.email} onChange={handleChange} placeholder="contact@moncommerce.fr" className={FORM_FIELDS_CLASSES} />
+                    </div>
+                    <div>
+                      <label htmlFor="phone" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                        Téléphone (optionnel)
+                      </label>
+                      <input id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="06 12 34 56 78" className={FORM_FIELDS_CLASSES} />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label htmlFor="message" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400">
+                      Un mot sur votre projet (optionnel)
+                    </label>
+                    <textarea id="message" name="message" rows={4} value={form.message} onChange={handleChange} placeholder="Partagez vos résultats d'audit, vos objectifs, votre situation actuelle sur Google..." className={`${FORM_FIELDS_CLASSES} resize-none`} />
+                  </div>
+
+                  <button type="submit" disabled={formState === 'sending'} className="btn-primary disabled:opacity-60">
+                    {formState === 'sending' ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                        Envoi en cours...
+                      </span>
+                    ) : (
+                      'Envoyer ma demande'
+                    )}
+                  </button>
+                </form>
+              )}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── CTA final ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
+      <section className="rounded-t-[1.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 sm:rounded-t-[2.5rem] text-white">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
               Prêt à dominer <span className="serif-accent text-accent">Google Maps</span> ?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">
-              Lancez votre audit gratuit maintenant ou prenez rendez-vous avec un expert pour aller plus loin.
+              Lancez votre audit gratuit maintenant, ou faites appel à nos experts pour aller encore plus loin.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/audit-gratuit" className="btn-accent">
                 Lancer l&apos;audit gratuit
               </Link>
-              <Link href="/rendez-vous" className="btn-secondary !bg-white/10 !border-white/20 !text-white hover:!bg-white/20">
-                Prendre rendez-vous
-              </Link>
+              <a href="#formulaire" className="btn-secondary !bg-white/10 !border-white/20 !text-white hover:!bg-white/20">
+                Parler à un expert
+              </a>
             </div>
           </div>
         </Reveal>

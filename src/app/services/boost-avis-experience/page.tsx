@@ -4,15 +4,14 @@ import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import {
-  CheckCircle,
   SealCheck,
   Star,
   TrendUp,
   CaretDown,
-  Lightbulb,
-  Medal,
+  ArrowRight,
 } from '@phosphor-icons/react';
 import FreehandIcon from '@/components/FreehandIcon';
+import BoostAvisFunnel from '@/components/BoostAvisFunnel';
 
 const CLIENT_LOGOS = [
   { name: 'Brand 05', logo: '/logos/brand-logo-05.svg' },
@@ -89,47 +88,38 @@ const HOW_IT_WORKS = [
   {
     num: '2',
     icon: 'users' as const,
-    title: 'Visite par nos étudiants',
-    description: 'Des étudiants sélectionnés visitent votre établissement et vivent une expérience réelle (repas, soin, service...).',
+    title: 'Test par nos ambassadeurs',
+    description: 'Nos ambassadeurs se rendent chez vous et vivent l\'expérience comme un client classique (repas, soin, service...).',
   },
   {
     num: '3',
     icon: 'star' as const,
-    title: 'Avis Google authentique',
-    description: 'Ils laissent un avis Google détaillé et authentique basé sur leur expérience réelle chez vous.',
+    title: 'Avis Google publié',
+    description: 'Après leur visite, ils rédigent et publient un avis détaillé sur votre fiche Google.',
   },
 ];
 
 const BENEFITS = [
   {
-    icon: 'check-badge' as const,
-    title: '100% conforme Google',
-    description: 'Nos avis respectent scrupuleusement les CGU Google. Ce sont de vrais avis de vraies personnes après une vraie visite.',
-  },
-  {
     icon: 'eye' as const,
-    title: 'Avis détaillés et crédibles',
-    description: 'Pas de "Super !" générique. Nos visiteurs rédigent des avis longs, détaillés, avec photos quand c\'est possible.',
+    title: 'Des avis détaillés',
+    description: 'De vrais retours d\'expérience, rédigés après une visite en établissement. Pas de commentaires génériques.',
   },
   {
-    icon: 'shield' as const,
-    title: 'Risque zéro',
-    description: 'Aucun risque de pénalité Google. Les visites sont réelles, les expériences authentiques, les avis naturels.',
+    icon: 'chart-line' as const,
+    title: 'Un rythme naturel',
+    description: 'Le volume d\'avis est calibré pour une croissance régulière et cohérente avec votre activité.',
   },
   {
     icon: 'star' as const,
-    title: 'Impact SEO direct',
-    description: 'Plus d\'avis récents = meilleur classement Google Maps. Chaque avis renforce votre positionnement local.',
+    title: 'Votre note s\'améliore',
+    description: 'Des avis argumentés qui reflètent la qualité réelle de votre service.',
   },
-];
-
-const INCLUDED = [
-  'Des étudiants visitent votre établissement',
-  'Ils vivent une expérience réelle (repas, soin, service…)',
-  'Ils laissent un avis Google authentique et détaillé',
-  '100% conforme aux CGU Google',
-  'Suivi et reporting des avis publiés',
-  'Accompagnement pour répondre aux avis',
+  {
+    icon: 'map-pin' as const,
+    title: 'Plus de visibilité locale',
+    description: 'Plus d\'avis récents, meilleur positionnement sur Google Maps dans votre zone.',
+  },
 ];
 
 const RECENT_REVIEWS = [
@@ -138,61 +128,54 @@ const RECENT_REVIEWS = [
   { name: 'Camille D.', time: 'il y a 1 semaine', rating: 5, text: 'Superbe découverte. Rapport qualité-prix excellent, ambiance conviviale. On reviendra avec plaisir.' },
 ];
 
-const PROBLEMS = [
+const PRICING_TIERS = [
   {
-    icon: 'warning' as const,
-    title: 'Peu d\'avis = peu de confiance',
-    description: '88% des consommateurs font autant confiance aux avis en ligne qu\'aux recommandations personnelles. Sans avis récents, vos prospects choisissent vos concurrents.',
+    tier: 1,
+    label: 'Lancement',
+    range: '30 – 50 avis',
+    rate: '24,7€',
+    rateLabel: '/ avis',
+    discount: null as string | null,
+    tagline: 'Idéal pour lancer la dynamique',
   },
   {
-    icon: 'chart-line' as const,
-    title: 'Les avis impactent votre ranking',
-    description: 'Google considère la quantité et la fraîcheur des avis comme un facteur de classement majeur. Moins d\'avis = moins de visibilité dans le Local Pack.',
+    tier: 2,
+    label: 'Accélération',
+    range: '50 – 150 avis',
+    rate: '21,6€',
+    rateLabel: '/ avis',
+    discount: '–13%',
+    tagline: 'Crédibilité & social proof',
   },
   {
-    icon: 'chat' as const,
-    title: 'Demander des avis ne suffit plus',
-    description: 'Vos clients satisfaits oublient de laisser un avis. Seuls les mécontents prennent le temps. Résultat : une note qui ne reflète pas la réalité.',
+    tier: 3,
+    label: 'Domination',
+    range: '150+ avis',
+    rate: '19,5€',
+    rateLabel: '/ avis',
+    discount: '–21%',
+    tagline: 'Domination locale, crédibilité maximale',
   },
-];
-
-const STATS = [
-  { value: '88%', label: 'font confiance aux avis en ligne' },
-  { value: '+0.4', label: 'de note moyenne par mois' },
-  { value: '24+', label: 'avis publiés / mois' },
-  { value: '100%', label: 'conforme CGU Google' },
-];
-
-const COMPARISON = [
-  { label: 'Vraie visite physique', us: true, others: false },
-  { label: 'Expérience réelle vécue', us: true, others: false },
-  { label: 'Conforme CGU Google', us: true, others: false },
-  { label: 'Avis détaillés avec photos', us: true, others: false },
-  { label: 'Aucun risque de pénalité', us: true, others: false },
-  { label: 'Impact SEO durable', us: true, others: true },
 ];
 
 const TESTIMONIALS = [
   {
     name: 'Marie L.',
-    role: 'Restauratrice',
-    place: 'Le Bouillon Chartier, Paris',
+    role: 'Restauratrice · Paris',
     avatar: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=120&h=120&fit=crop&crop=center',
     text: 'En 3 mois, on est passé de 4.2 à 4.7 de note moyenne. Les avis sont naturels, détaillés, et nos clients nous disent qu\'ils nous ont trouvés grâce aux avis Google.',
     rating: 5,
   },
   {
     name: 'David K.',
-    role: 'Gérant',
-    place: 'Garage du Capitole, Toulouse',
+    role: 'Gérant de garage · Toulouse',
     avatar: 'https://images.unsplash.com/photo-1486006920555-c77dcf18193c?w=120&h=120&fit=crop&crop=center',
     text: 'Sandro et son équipe ont triplé nos avis Google en 4 mois. On reçoit maintenant 3x plus de demandes de devis. L\'approche est éthique et les résultats sont là.',
     rating: 5,
   },
   {
     name: 'Lucas P.',
-    role: 'Boulanger',
-    place: 'Boulangerie Maison Kayser, Strasbourg',
+    role: 'Boulanger · Strasbourg',
     avatar: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=120&h=120&fit=crop&crop=center',
     text: 'On hésitait, mais les avis sont d\'une qualité impressionnante. Les étudiants décrivent vraiment leur expérience. Résultat : +60% de nouveaux clients en 90 jours.',
     rating: 5,
@@ -226,11 +209,28 @@ const FAQ_ITEMS = [
   },
 ];
 
+
 export default function BoostAvisExperiencePage() {
+  const [testerCount, setTesterCount] = useState(50);
+  const [showFunnel, setShowFunnel] = useState(false);
+
+  const totalPrice =
+    testerCount <= 50
+      ? testerCount * 24.7
+      : testerCount <= 150
+      ? 50 * 24.7 + (testerCount - 50) * 21.6
+      : 50 * 24.7 + 100 * 21.6 + (testerCount - 150) * 19.5;
+  const pricePerTester = totalPrice / testerCount;
+  const currentTier = testerCount <= 50 ? 1 : testerCount <= 150 ? 2 : 3;
+  const savings = testerCount > 50 ? Math.round(testerCount * 24.7 - totalPrice) : 0;
+  const sliderPercent = ((testerCount - 30) / (300 - 30)) * 100;
+
   return (
+    <>
+    <BoostAvisFunnel isOpen={showFunnel} onClose={() => setShowFunnel(false)} />
     <main>
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden px-4 sm:px-6 pb-0 pt-10 sm:pt-16 md:pt-20">
+      {/* ── 1. Hero ── */}
+      <section className="relative overflow-hidden px-4 sm:px-6 pb-12 sm:pb-16 md:pb-24 pt-10 sm:pt-16 md:pt-20">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="hero-dot-grid absolute inset-0" />
           <div className="hero-glow" />
@@ -248,31 +248,29 @@ export default function BoostAvisExperiencePage() {
 
               <Reveal delay={0.08}>
                 <h1 className="text-balance text-heading-xl text-warm-900 sm:text-display-lg md:text-display-xl">
-                  Boost Avis <span className="serif-accent serif-accent-animated">Expérience</span>
+                  Plus d&apos;avis Google, plus de <span className="serif-accent serif-accent-animated">Clients</span>
                 </h1>
               </Reveal>
 
               <Reveal delay={0.16}>
                 <p className="mt-4 sm:mt-6 max-w-xl text-body-sm sm:text-body-lg text-warm-600">
-                  De vrais clients, de vraies visites, de vrais avis Google.
-                  La solution la plus naturelle et efficace pour booster votre réputation en ligne.
+                  Les entreprises avec le plus d&apos;avis attirent le plus de clients. Nous vous aidons à développer votre réputation Google.
                 </p>
               </Reveal>
 
               <Reveal delay={0.24}>
                 <div className="mt-6 sm:mt-10 flex flex-col gap-4 sm:flex-row">
-                  <Link href="/rendez-vous" className="btn-primary">
-                    Candidater
-                  </Link>
-                  <Link href="/audit-gratuit" className="btn-secondary">
-                    Audit gratuit
-                  </Link>
+                  <button onClick={() => setShowFunnel(true)} className="btn-primary">
+                    Obtenir plus d&apos;avis
+                  </button>
+                  <a href="#concept" className="btn-secondary">
+                    Comment ça marche
+                  </a>
                 </div>
               </Reveal>
             </div>
 
             <Reveal delay={0.3} className="relative hidden min-h-[420px] lg:block">
-              {/* Google Reviews card */}
               <motion.div
                 className="absolute right-0 top-0 z-10 w-[320px] overflow-hidden rounded-2xl border border-[#e8eaed] bg-white shadow-card"
                 animate={{ y: [0, -8, 0] }}
@@ -307,7 +305,6 @@ export default function BoostAvisExperiencePage() {
                 </div>
               </motion.div>
 
-              {/* Google rating summary card */}
               <motion.div
                 className="absolute bottom-0 left-0 z-20 w-[260px] overflow-hidden rounded-2xl border border-[#e8eaed] bg-white shadow-card"
                 animate={{ y: [0, -6, 0] }}
@@ -352,7 +349,6 @@ export default function BoostAvisExperiencePage() {
                 </div>
               </motion.div>
 
-              {/* Google verified badge */}
               <motion.div
                 className="absolute right-8 bottom-16 z-30 flex items-center gap-2 rounded-full border border-[#e8eaed] bg-white px-3.5 py-2 shadow-card"
                 animate={{ y: [0, -5, 0] }}
@@ -367,108 +363,131 @@ export default function BoostAvisExperiencePage() {
             </Reveal>
           </div>
         </div>
-
-        <div className="mt-10 sm:mt-16 overflow-hidden border-t border-warm-200 bg-white/60 py-5 md:mt-20">
-          <div className="logos-marquee flex items-center gap-14 sm:gap-20">
-            {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
-              <div key={i} className="flex h-8 w-28 shrink-0 items-center justify-center sm:h-10 sm:w-36">
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
-      {/* ── Problème ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mb-10 sm:mb-16 text-center">
-            <p className="section-label mb-4 justify-center">Le problème</p>
-            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Vos avis Google ne reflètent pas la <span className="serif-accent">réalité.</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              Les clients satisfaits partent sans laisser d&apos;avis. Les mécontents, eux, prennent le temps. Résultat : une note qui vous dessert et des prospects qui choisissent vos concurrents.
-            </p>
-          </Reveal>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {PROBLEMS.map((problem, i) => (
-              <Reveal key={problem.title} delay={i * 0.08}>
-                <div className="relative flex h-full flex-col items-start gap-4 rounded-2xl border border-red-100 bg-red-50/30 p-6">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-red-600">
-                    <FreehandIcon name={problem.icon} size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-warm-900">{problem.title}</h3>
-                    <p className="mt-2 text-body-sm leading-relaxed text-warm-500">{problem.description}</p>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Stats bar ── */}
-      <section className="border-y border-warm-200 bg-white px-4 sm:px-6 py-10 sm:py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {STATS.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 0.06}>
-                <div className="text-center">
-                  <p className="serif-accent text-[2rem] sm:text-[2.5rem] leading-none tracking-tight text-warm-900 md:text-[3rem]">
-                    {stat.value}
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-warm-500">{stat.label}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Solution intro ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl">
-          <Reveal className="text-center">
-            <div className="mx-auto mb-4 sm:mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10">
-              <Lightbulb weight="fill" className="h-7 w-7 text-accent-dark" />
+      {/* ── 2. Logo défilant ── */}
+      <section className="overflow-hidden border-y border-warm-200 bg-white py-4 sm:py-6">
+        <div className="logos-marquee flex items-center gap-12 sm:gap-16">
+          {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
+            <div key={i} className="flex h-6 w-20 shrink-0 items-center justify-center sm:h-7 sm:w-28">
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
+              />
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 2b. Identification du problème ── */}
+      <section className="px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="mb-8 sm:mb-12 text-center">
+            <p className="section-label mb-4 justify-center">Le constat</p>
             <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Et si de vrais visiteurs laissaient de vrais <span className="serif-accent">avis</span> ?
+              Pourquoi les avis Google sont <span className="serif-accent">décisifs</span>
             </h2>
-            <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              Pas de bots. Pas de faux comptes. Des étudiants sélectionnés qui visitent réellement votre établissement, vivent une expérience authentique, et laissent un avis détaillé basé sur du vécu.
-            </p>
+          </Reveal>
+
+          <div className="space-y-5">
+            <Reveal delay={0.06}>
+              <p className="text-body-sm sm:text-body-lg leading-relaxed text-warm-600">
+                Aujourd&apos;hui, la grande majorité des clients regardent les avis Google avant de choisir une entreprise. Dans beaucoup de secteurs, la décision se fait en quelques secondes entre deux fiches&nbsp;: celle qui a le plus d&apos;avis et la meilleure note gagne presque toujours.
+              </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <p className="text-body-sm sm:text-body-lg leading-relaxed text-warm-600">
+                Le problème, c&apos;est que les clients satisfaits laissent rarement un avis, alors que les clients mécontents le font beaucoup plus facilement. Résultat&nbsp;: beaucoup d&apos;entreprises ont une note qui ne reflète pas vraiment la qualité de leur service.
+              </p>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p className="text-body-sm sm:text-body-lg leading-relaxed text-warm-600">
+                Concrètement, cela signifie que deux entreprises qui font exactement le même travail peuvent avoir des résultats très différents simplement à cause de leur réputation en ligne.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.24}>
+              <div className="mt-6 sm:mt-8 grid grid-cols-2 gap-4">
+                <div className="relative rounded-2xl border border-positive/30 bg-positive/[0.04] p-5 sm:p-6 text-center">
+                  <span className="absolute -top-2.5 left-4 rounded-full bg-positive px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                    Gagnant
+                  </span>
+                  <div className="mt-1 flex items-center justify-center gap-1.5 mb-2">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} weight="fill" className="h-4 w-4 text-[#FBBC04]" />
+                    ))}
+                  </div>
+                  <p className="text-2xl sm:text-3xl font-semibold text-warm-900">4,7<span className="text-lg text-warm-400">/5</span></p>
+                  <p className="mt-1 text-sm font-medium text-warm-500">150 avis</p>
+                </div>
+                <div className="relative rounded-2xl border border-warm-200 bg-warm-50 p-5 sm:p-6 text-center opacity-60">
+                  <span className="absolute -top-2.5 left-4 rounded-full bg-warm-400 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                    Invisible
+                  </span>
+                  <div className="mt-1 flex items-center justify-center gap-1.5 mb-2">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} weight={i < 4 ? 'fill' : 'regular'} className={`h-4 w-4 ${i < 4 ? 'text-[#FBBC04]' : 'text-warm-200'}`} />
+                    ))}
+                  </div>
+                  <p className="text-2xl sm:text-3xl font-semibold text-warm-900">4,2<span className="text-lg text-warm-400">/5</span></p>
+                  <p className="mt-1 text-sm font-medium text-warm-500">20 avis</p>
+                </div>
+              </div>
+              <p className="mt-4 text-center text-sm text-warm-500 italic">
+                Même qualité de service, résultats très différents.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 2c. Intro de notre solution ── */}
+      <section className="bg-warm-50 px-4 sm:px-6 py-10 sm:py-16">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <div className="rounded-2xl border border-accent/20 bg-accent/[0.04] p-6 sm:p-10 text-center">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-white px-4 py-2 text-sm font-semibold text-accent-dark">
+                <SealCheck weight="fill" className="h-4 w-4" />
+                Notre approche
+              </div>
+              <p className="text-body-sm sm:text-body-lg leading-relaxed text-warm-700 max-w-2xl mx-auto">
+                Notre rôle est d&apos;aider les entreprises à développer leur réputation en ligne de manière naturelle, en générant davantage d&apos;expériences clients et donc plus de retours authentiques.
+              </p>
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* ── How it works ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mb-8 sm:mb-12 text-center">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Comment ça marche</p>
-            <h2 className="text-heading-xl text-white sm:text-display">
-              Des avis authentiques, pas des <span className="serif-accent text-accent">faux.</span>
+      {/* ── 3. Comment ça marche ── */}
+      <section id="concept" className="relative overflow-hidden bg-warm-900 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-accent/[0.04] blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl">
+          <Reveal className="mb-10 sm:mb-16 text-center">
+            <p className="section-label mb-4 justify-center !text-accent before:!bg-accent/40">Comment ça marche</p>
+            <h2 className="text-balance text-heading-xl text-white sm:text-display">
+              Des ambassadeurs testent votre <span className="serif-accent text-accent">établissement.</span>
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-white/50">
+              On sélectionne, on envoie, ils vivent l&apos;expérience et laissent un avis sur Google.
+            </p>
           </Reveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {HOW_IT_WORKS.map((step, i) => (
-              <Reveal key={step.num} delay={i * 0.1}>
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-accent">
-                    <FreehandIcon name={step.icon} size={24} />
+              <Reveal key={step.num} delay={i * 0.08}>
+                <div className="relative flex h-full flex-col items-start gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/20 hover:bg-white/[0.06]">
+                  <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-accent/20 to-accent/5 ring-1 ring-accent/10 text-accent">
+                    <FreehandIcon name={step.icon} size={44} />
                   </div>
-                  <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
-                  <h3 className="text-lg font-medium text-white">{step.title}</h3>
-                  <p className="mx-auto mt-2 max-w-[260px] text-sm leading-relaxed text-white/50">{step.description}</p>
+                  <div>
+                    <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
+                    <h3 className="text-lg font-medium text-white">{step.title}</h3>
+                    <p className="mt-2 text-body-sm leading-relaxed text-white/50">{step.description}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -476,23 +495,157 @@ export default function BoostAvisExperiencePage() {
         </div>
       </section>
 
-      {/* ── Benefits ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-7xl">
-          <Reveal className="mb-10 sm:mb-16 text-center">
-            <p className="section-label mb-4 justify-center">Pourquoi ça marche</p>
+      {/* ── 4. Simulateur pricing ── */}
+      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24" id="pricing">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="mb-6 sm:mb-8 text-center">
+            <p className="section-label mb-3 justify-center">Tarification</p>
             <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Les avis sont le nerf de la <span className="serif-accent">guerre.</span>
+              Estimez votre <span className="serif-accent">investissement</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              88% des consommateurs font autant confiance aux avis en ligne qu&apos;aux recommandations personnelles.
+            <p className="mx-auto mt-3 max-w-md text-body-sm text-warm-500">
+              Plus le volume augmente, plus le prix unitaire baisse. On gère tout.
             </p>
           </Reveal>
 
-          <div className="grid gap-5 sm:grid-cols-2">
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-warm-200 bg-white p-6 sm:p-10 shadow-soft">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+                <div className="flex-1">
+                  <div className="flex items-baseline justify-between mb-3">
+                    <span className="text-sm font-medium text-warm-400">Nombre d&apos;avis</span>
+                    <motion.span
+                      key={testerCount}
+                      initial={{ opacity: 0.6 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.12 }}
+                      className="text-xl font-semibold text-warm-900 tabular-nums"
+                    >
+                      {testerCount}
+                    </motion.span>
+                  </div>
+                  <input
+                    type="range"
+                    min={30}
+                    max={300}
+                    step={10}
+                    value={testerCount}
+                    onChange={(e) => setTesterCount(Number(e.target.value))}
+                    className="pricing-slider w-full"
+                    style={{
+                      background: `linear-gradient(to right, #D4A82E 0%, #D4A82E ${sliderPercent}%, #E3DCD2 ${sliderPercent}%, #E3DCD2 100%)`,
+                    }}
+                  />
+                  <div className="mt-1.5 flex justify-between text-xs text-warm-300">
+                    <span>30</span>
+                    <span>300</span>
+                  </div>
+                </div>
+
+                <div className="h-px sm:h-20 sm:w-px bg-warm-200/60 shrink-0" />
+
+                <div className="text-center sm:text-right shrink-0 sm:min-w-[160px]">
+                  <div className="flex items-baseline justify-center sm:justify-end gap-1.5">
+                    <motion.span
+                      key={Math.round(totalPrice)}
+                      initial={{ opacity: 0.6 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.12 }}
+                      className="text-3xl sm:text-4xl font-semibold text-warm-900 tabular-nums"
+                    >
+                      {Math.round(totalPrice).toLocaleString('fr-FR')}&euro;
+                    </motion.span>
+                    <span className="text-sm font-medium text-warm-400">HT</span>
+                  </div>
+                  <p className="mt-1 text-sm text-warm-500">
+                    soit <span className="font-semibold text-warm-700">{pricePerTester.toFixed(1).replace('.', ',')}€</span> / avis
+                  </p>
+                  {savings > 0 && (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="mt-2 inline-flex items-center gap-1 rounded-full bg-positive/10 px-2.5 py-1 text-xs font-semibold text-positive"
+                    >
+                      <TrendUp weight="bold" className="h-3.5 w-3.5" />
+                      –{savings}€
+                    </motion.span>
+                  )}
+                </div>
+              </div>
+
+              <div className="my-6 h-px bg-warm-100" />
+
+              <div className="grid gap-3 sm:grid-cols-3">
+                {PRICING_TIERS.map((t) => {
+                  const isActive = currentTier >= t.tier;
+                  const isCurrent = currentTier === t.tier;
+                  return (
+                    <div
+                      key={t.tier}
+                      className={`relative rounded-xl border px-4 py-4 transition-all duration-300 ${
+                        isCurrent
+                          ? 'border-accent/40 bg-accent/[0.04] ring-1 ring-accent/15'
+                          : isActive
+                          ? 'border-warm-200 bg-white'
+                          : 'border-warm-100 bg-warm-50/50 opacity-40'
+                      }`}
+                    >
+                      {isCurrent && (
+                        <span className="absolute -top-2.5 left-3 rounded-full bg-accent-dark px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                          Actif
+                        </span>
+                      )}
+                      <div className="flex items-center justify-between mt-0.5">
+                        <span className={`text-xs font-bold uppercase tracking-[0.12em] ${isCurrent ? 'text-accent-dark' : 'text-warm-400'}`}>
+                          {t.label}
+                        </span>
+                        {t.discount && (
+                          <span className={`text-[11px] font-bold rounded-full px-2 py-0.5 ${isActive ? 'bg-positive/10 text-positive' : 'bg-warm-100 text-warm-400'}`}>
+                            {t.discount}
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1.5 text-lg font-semibold text-warm-900">
+                        {t.rate}<span className="text-xs font-normal text-warm-400"> {t.rateLabel}</span>
+                      </p>
+                      <p className="text-xs text-warm-400">{t.range}</p>
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className="my-6 h-px bg-warm-100" />
+
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-start gap-2.5">
+                  <SealCheck weight="fill" className="mt-0.5 h-5 w-5 shrink-0 text-accent-dark" />
+                  <p className="text-sm leading-relaxed text-warm-500">
+                    <span className="font-semibold text-warm-700">Garantie satisfaction</span> — Remboursement si non satisfait.
+                  </p>
+                </div>
+                <button onClick={() => setShowFunnel(true)} className="btn-primary shrink-0 text-sm">
+                  Obtenir plus d&apos;avis
+                </button>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ── 5. Avantages ── */}
+      <section className="bg-warm-100 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-7xl">
+          <Reveal className="mb-10 sm:mb-16 text-center">
+            <p className="section-label mb-4 justify-center">Les avantages</p>
+            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+              Ce que ça change <span className="serif-accent">concrètement.</span>
+            </h2>
+          </Reveal>
+
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-5">
             {BENEFITS.map((benefit, i) => (
               <Reveal key={benefit.title} delay={i * 0.06}>
-                <div className="card-hover group relative flex h-full flex-col items-start gap-4 p-6">
+                <div className="group relative flex h-full flex-col items-start gap-4 rounded-xl border border-warm-200/80 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-2xl sm:p-7">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-warm-100 text-warm-700 transition-colors group-hover:bg-accent-light group-hover:text-accent-dark">
                     <FreehandIcon name={benefit.icon} size={20} />
                   </div>
@@ -507,44 +660,7 @@ export default function BoostAvisExperiencePage() {
         </div>
       </section>
 
-      {/* ── Comparison table ── */}
-      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-3xl">
-          <Reveal className="mb-8 sm:mb-12 text-center">
-            <p className="section-label mb-4 justify-center">Notre différence</p>
-            <h2 className="text-heading-xl text-warm-900">
-              Siva vs. les <span className="serif-accent">autres.</span>
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="overflow-hidden rounded-2xl border border-warm-200 bg-white shadow-soft">
-              <div className="grid grid-cols-3 border-b border-warm-200 bg-warm-50 px-3 sm:px-6 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-warm-400">
-                <span>Critère</span>
-                <span className="text-center">Boost Avis Siva</span>
-                <span className="text-center">Autres services</span>
-              </div>
-              {COMPARISON.map((row, i) => (
-                <div key={row.label} className={`grid grid-cols-3 items-center px-3 sm:px-6 py-4 ${i < COMPARISON.length - 1 ? 'border-b border-warm-100' : ''}`}>
-                  <span className="text-sm font-medium text-warm-900">{row.label}</span>
-                  <div className="flex justify-center">
-                    <CheckCircle weight="fill" className="h-5 w-5 text-positive" />
-                  </div>
-                  <div className="flex justify-center">
-                    {row.others ? (
-                      <CheckCircle weight="fill" className="h-5 w-5 text-warm-300" />
-                    ) : (
-                      <span className="text-sm text-red-400">✕</span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Témoignages ── */}
+      {/* ── 6. Social proof – Témoignages ── */}
       <section className="px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-16 text-center">
@@ -557,7 +673,7 @@ export default function BoostAvisExperiencePage() {
           <div className="grid gap-6 md:grid-cols-3">
             {TESTIMONIALS.map((t, i) => (
               <Reveal key={t.name} delay={i * 0.08}>
-                <div className="card-hover flex h-full flex-col justify-between p-6">
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-warm-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:rounded-3xl sm:p-7">
                   <div>
                     <div className="mb-3 flex gap-0.5">
                       {Array.from({ length: t.rating }).map((_, j) => (
@@ -567,10 +683,10 @@ export default function BoostAvisExperiencePage() {
                     <p className="text-[15px] leading-relaxed text-warm-600">&ldquo;{t.text}&rdquo;</p>
                   </div>
                   <div className="mt-6 flex items-center gap-3 border-t border-warm-100 pt-5">
-                    <img src={t.avatar} alt={t.place} className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover" />
+                    <img src={t.avatar} alt={t.name} className="h-10 w-10 shrink-0 rounded-full border border-warm-200 object-cover" />
                     <div>
                       <p className="text-sm font-semibold text-warm-900">{t.name}</p>
-                      <p className="text-xs text-warm-500">{t.role} @ {t.place}</p>
+                      <p className="text-xs text-warm-500">{t.role}</p>
                     </div>
                   </div>
                 </div>
@@ -580,66 +696,7 @@ export default function BoostAvisExperiencePage() {
         </div>
       </section>
 
-      {/* ── Pricing ── */}
-      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl">
-          <Reveal>
-            <div className="rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 shadow-soft lg:p-12">
-              <div className="mb-8 text-center">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-warm-200 bg-warm-50 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-warm-500">
-                  Candidature requise
-                </span>
-                <h3 className="mt-4 text-2xl font-medium text-warm-900">Boost Avis Expérience</h3>
-                <div className="mt-4">
-                  <span className="serif-accent text-[2.5rem] sm:text-[3.25rem] leading-none tracking-tight text-warm-900">Sur devis</span>
-                </div>
-                <p className="mt-2 text-sm text-warm-500">Tarif personnalisé selon votre secteur et vos besoins</p>
-              </div>
-
-              <div className="mb-8 h-px bg-warm-200/60" />
-
-              <p className="mb-6 text-[10px] font-bold uppercase tracking-[0.2em] text-warm-400">
-                Ce qui est inclus
-              </p>
-              <ul className="grid gap-4 sm:grid-cols-2">
-                {INCLUDED.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-[15px] text-warm-700">
-                    <CheckCircle weight="fill" className="mt-0.5 h-[18px] w-[18px] shrink-0 text-accent-dark" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Link href="/rendez-vous" className="btn-accent">
-                  Candidater
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Garantie ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-20">
-        <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <div className="flex flex-col items-center gap-6 rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 text-center shadow-soft md:flex-row md:text-left lg:p-10">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-positive/10">
-                <Medal weight="fill" className="h-8 w-8 text-positive" />
-              </div>
-              <div>
-                <h3 className="text-xl font-medium text-warm-900">100% conforme, 0% de risque</h3>
-                <p className="mt-2 text-body-sm leading-relaxed text-warm-500">
-                  Nos avis respectent à 100% les CGU Google. De vraies personnes, de vraies visites, de vrais avis. Si un avis est supprimé par Google (cas extrêmement rare), il est remplacé gratuitement.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
+      {/* ── 7. FAQ ── */}
       <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-3xl">
           <Reveal className="mb-8 sm:mb-12 text-center">
@@ -650,7 +707,7 @@ export default function BoostAvisExperiencePage() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-warm-200 bg-white px-4 sm:px-6 shadow-soft md:px-8">
+            <div className="rounded-2xl border border-warm-200 bg-white px-4 sm:px-6 shadow-soft sm:rounded-3xl md:px-8">
               {FAQ_ITEMS.map((item) => (
                 <FAQItem key={item.q} q={item.q} a={item.a} />
               ))}
@@ -659,20 +716,55 @@ export default function BoostAvisExperiencePage() {
         </div>
       </section>
 
+      {/* ── 8. CTA Devis ── */}
+      <section id="formulaire" className="px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-3xl">
+          <Reveal>
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-8 sm:p-12 shadow-card text-center">
+              <div className="pointer-events-none absolute inset-0">
+                <div className="hero-dot-grid absolute inset-0 opacity-40" />
+                <div className="absolute left-1/2 top-0 h-[300px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/10 blur-[80px]" />
+              </div>
+              <div className="relative">
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-warm-200 bg-warm-50 px-4 py-2 text-sm font-semibold text-warm-700">
+                  <SealCheck weight="fill" className="h-4 w-4 text-accent-dark" />
+                  Devis personnalisé en 2 minutes
+                </div>
+                <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+                  Obtenez votre devis <span className="serif-accent">sur-mesure</span>
+                </h2>
+                <p className="mx-auto mt-4 max-w-md text-body-sm sm:text-body-lg text-warm-500">
+                  Répondez à 4 questions et recevez immédiatement une estimation personnalisée pour votre établissement.
+                </p>
+                <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                  <button onClick={() => setShowFunnel(true)} className="btn-accent btn-hero">
+                    Calculer mon devis gratuit
+                  </button>
+                  <div className="flex items-center gap-1.5 text-sm text-warm-400">
+                    <ArrowRight className="h-3.5 w-3.5" />
+                    Sans engagement · Réponse sous 24h
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       {/* ── CTA final ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
+      <section className="rounded-t-[1.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 sm:rounded-t-[2.5rem] text-white">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-heading-xl text-white">
+            <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
               Prêt à booster vos <span className="serif-accent text-accent">avis Google</span> ?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">
-              Candidatez maintenant ou commencez par un audit gratuit pour évaluer votre potentiel.
+              Obtenez votre devis en 2 minutes ou commencez par un audit gratuit.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Link href="/rendez-vous" className="btn-accent">
-                Candidater
-              </Link>
+              <button onClick={() => setShowFunnel(true)} className="btn-accent">
+                Calculer mon devis
+              </button>
               <Link href="/audit-gratuit" className="btn-secondary !bg-white/10 !border-white/20 !text-white hover:!bg-white/20">
                 Lancer l&apos;audit gratuit
               </Link>
@@ -681,5 +773,6 @@ export default function BoostAvisExperiencePage() {
         </Reveal>
       </section>
     </main>
+    </>
   );
 }

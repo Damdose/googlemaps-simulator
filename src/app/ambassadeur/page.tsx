@@ -6,14 +6,14 @@ import {
   CaretDown,
   CheckCircle,
   Gift,
-  Lightbulb,
   MapPin,
-  Medal,
   Star,
   UsersThree,
   CalendarCheck,
   ForkKnife,
   Trophy,
+  Handshake,
+  UserPlus,
 } from '@phosphor-icons/react';
 import FreehandIcon, { type FreehandIconName } from '@/components/FreehandIcon';
 
@@ -56,6 +56,71 @@ function Reveal({
   );
 }
 
+function Sticker({
+  children,
+  className = '',
+  rotate = 0,
+  float = true,
+  floatDuration = 3,
+  floatStyle = 'float',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  rotate?: number;
+  float?: boolean;
+  floatDuration?: number;
+  floatStyle?: 'float' | 'bob' | 'sway' | 'pulse';
+}) {
+  const floatAnimations = {
+    float: { y: [0, -14, 0], x: [0, 6, 0] },
+    bob: { y: [0, -8, 2, -8, 0], x: [0, -3, 0, 3, 0] },
+    sway: { y: [0, -4, 0], x: [0, 10, 0, -10, 0], rotate: [rotate - 5, rotate + 5, rotate - 5] },
+    pulse: { y: [0, -10, 0], scale: [1, 1.08, 1] },
+  };
+
+  const floatTransitions: Record<string, Record<string, unknown>> = {
+    float: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration * 1.4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
+    },
+    bob: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration * 1.6, repeat: Infinity, ease: 'easeInOut', delay: 0.7 },
+    },
+    sway: {
+      y: { duration: floatDuration * 1.2, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      x: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      rotate: { duration: floatDuration * 1.5, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+    },
+    pulse: {
+      y: { duration: floatDuration, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+      scale: { duration: floatDuration * 1.3, repeat: Infinity, ease: 'easeInOut', delay: 0.6 },
+    },
+  };
+
+  return (
+    <motion.span
+      className={`inline-block cursor-default select-none drop-shadow-lg ${className}`}
+      initial={{ opacity: 0, scale: 0, rotate: rotate - 20 }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+        rotate,
+        ...(float ? floatAnimations[floatStyle] : {}),
+      }}
+      transition={{
+        opacity: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        scale: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        rotate: { type: 'spring', stiffness: 260, damping: 20, delay: 0.6 },
+        ...(float ? floatTransitions[floatStyle] : {}),
+      }}
+      whileHover={{ scale: 1.3, rotate: rotate + 10 }}
+    >
+      {children}
+    </motion.span>
+  );
+}
+
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
@@ -64,7 +129,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between gap-3 sm:gap-4 py-4 sm:py-6 text-left"
       >
-        <span className="text-sm sm:text-[17px] font-semibold text-warm-900">{q}</span>
+        <span className="text-sm sm:text-[17px] font-medium text-warm-900">{q}</span>
         <CaretDown
           weight="bold"
           className={`h-5 w-5 shrink-0 text-warm-400 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
@@ -82,181 +147,166 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-const PROBLEMS = [
-  {
-    icon: 'users' as const satisfies FreehandIconName,
-    title: 'Des activités qui se répètent',
-    description:
-      'Sorties culturelles, pique-niques, réunions... Vos membres veulent de la nouveauté mais le budget limite les possibilités.',
-  },
-  {
-    icon: 'calendar' as const satisfies FreehandIconName,
-    title: 'Difficile de mobiliser',
-    description:
-      'La participation baisse quand les activités se ressemblent. Les membres les plus actifs finissent par décrocher.',
-  },
-  {
-    icon: 'coins' as const satisfies FreehandIconName,
-    title: 'Le budget freine l\'ambition',
-    description:
-      'Restaurants, hôtels, loisirs... Ces expériences coûtent cher et sont rarement accessibles pour une association.',
-  },
-];
-
-const STATS = [
-  { value: '50+', label: 'Établissements partenaires' },
-  { value: '100%', label: 'Gratuit pour les associations' },
-  { value: '48h', label: 'Délai de validation' },
-  { value: '4.8/5', label: 'Satisfaction des membres' },
-];
-
 const STEPS = [
   {
     num: '1',
-    icon: 'users' as const satisfies FreehandIconName,
+    icon: 'unlock' as const satisfies FreehandIconName,
     title: 'Inscrivez votre association',
     description:
-      'Remplissez le formulaire avec les infos de votre asso. On valide votre candidature sous 48h.',
+      'Formulaire en 2 minutes. Aucun frais, aucun engagement. Votre candidature est étudiée sous 48h.',
   },
   {
     num: '2',
-    icon: 'map-pin' as const satisfies FreehandIconName,
-    title: 'Testez des établissements',
+    icon: 'store' as const satisfies FreehandIconName,
+    title: 'Vos membres vivent l\'expérience',
     description:
-      'Recevez des invitations pour découvrir des restaurants, hôtels, commerces et lieux locaux.',
+      'On vous envoie des invitations : restaurants, mais aussi des services en ligne (formations, applications, etc.). Vos membres testent en physique ou à distance, selon la mission.',
   },
   {
     num: '3',
-    icon: 'star' as const satisfies FreehandIconName,
-    title: 'Partagez votre expérience',
+    icon: 'coins' as const satisfies FreehandIconName,
+    title: 'Un avis libre, une rémunération',
     description:
-      'Laissez un avis honnête et détaillé sur Google. Plus vous êtes actifs, plus vous recevez d\'invitations.',
+      'Après chaque visite ou utilisation d\'un service en ligne, vos membres sont libres de laisser un avis Google honnête. Votre association est rémunérée pour chaque mission accomplie.',
   },
 ];
 
 const BENEFITS = [
   {
     icon: 'store' as const satisfies FreehandIconName,
-    title: 'Repas offerts',
+    title: 'Expériences 100% offertes',
     description:
-      'Découvrez les meilleurs restaurants de votre ville, menu offert pour vos membres.',
+      'Restaurants, hôtels, spas, mais aussi services en ligne (formations, applications...). Vos membres ne déboursent pas un centime.',
+  },
+  {
+    icon: 'coins' as const satisfies FreehandIconName,
+    title: 'Rémunération directe',
+    description:
+      'Chaque mission accomplie rapporte de l\'argent à votre association. Versement direct, sans intermédiaire.',
   },
   {
     icon: 'sparkle' as const satisfies FreehandIconName,
-    title: 'Expériences exclusives',
+    title: 'Missions variées',
     description:
-      'Accédez à des événements, dégustations et activités réservés à nos ambassadeurs.',
+      'Tests en physique dans les meilleurs établissements de votre ville, ou à distance pour des services en ligne. Chacun choisit ses missions.',
   },
   {
-    icon: 'building' as const satisfies FreehandIconName,
-    title: 'Séjours & bien-être',
+    icon: 'shield' as const satisfies FreehandIconName,
+    title: 'Zéro contrainte',
     description:
-      'Profitez de nuits d\'hôtel, spas et activités de loisirs pour votre communauté.',
+      'Pas de quota, pas d\'engagement. Vos membres participent quand ils veulent, au rythme qui leur convient.',
   },
   {
-    icon: 'store' as const satisfies FreehandIconName,
-    title: 'Commerces locaux',
+    icon: 'team' as const satisfies FreehandIconName,
+    title: 'Un levier d\'adhésion',
     description:
-      'Testez des boutiques, salons et commerces de proximité avec des avantages exclusifs.',
-  },
-  {
-    icon: 'camera' as const satisfies FreehandIconName,
-    title: 'Visibilité pour votre asso',
-    description:
-      'Votre association est mise en avant sur nos réseaux et auprès de nos partenaires.',
+      'Des sorties gratuites dans les meilleurs restos de la ville : c\'est l\'argument qui fait la différence pour recruter des adhérents.',
   },
   {
     icon: 'crown' as const satisfies FreehandIconName,
     title: 'Statut VIP',
     description:
-      'Les associations les plus actives accèdent au statut VIP avec des avantages doublés.',
+      'Les assos les plus actives débloquent le statut VIP : accès prioritaire aux missions premium et rémunération majorée.',
   },
-];
-
-const COMPARISON = [
-  { label: 'Expériences 100% gratuites', us: true, others: false },
-  { label: 'Restaurants, hôtels, loisirs', us: true, others: false },
-  { label: 'Ouvert à toutes les associations', us: true, others: true },
-  { label: 'Statut VIP et avantages doublés', us: true, others: false },
-  { label: 'Visibilité pour votre asso', us: true, others: false },
-  { label: 'Aucun engagement', us: true, others: true },
-];
-
-const INCLUDED = [
-  'Accès gratuit aux établissements partenaires',
-  'Repas, soins, séjours offerts pour vos membres',
-  'Invitations personnalisées par ville et secteur',
-  'Visibilité de votre asso sur nos réseaux',
-  'Statut VIP pour les assos les plus actives',
-  'Aucun engagement, aucun frais',
 ];
 
 const TESTIMONIALS = [
   {
     name: 'Claire D.',
-    role: 'Présidente',
-    company: 'Les Amis de Montmartre',
-    avatar: '👩🏻',
-    text: 'Nos membres adorent le programme. En 2 mois, on a testé 8 restaurants et un spa. C\'est devenu notre activité préférée. Tout est gratuit et bien organisé.',
+    role: 'Présidente BDE',
+    company: 'Université parisienne',
+    avatar: '/logos/sorbonne.png',
+    text: 'En 3 mois, nos membres ont testé 12 restaurants et 2 spas. L\'asso a touché plus de 1 200€ sans débourser un centime. C\'est devenu un vrai complément pour notre budget.',
     rating: 5,
   },
   {
     name: 'Karim B.',
-    role: 'Vice-président',
-    company: 'Asso Jeunes du 13e',
-    avatar: '👨🏾',
-    text: 'On cherchait des activités originales sans exploser notre budget. Le programme ambassadeur est parfait : des sorties gratuites de qualité. On a triplé notre nombre de membres.',
+    role: 'Vice-président BDE',
+    company: 'Grande école parisienne',
+    avatar: '/logos/sciences-po.png',
+    text: 'On cherchait un moyen de financer nos événements sans vendre des gâteaux. Le programme nous rapporte entre 150 et 300€ par mois, et nos membres sont ravis des sorties.',
     rating: 5,
   },
   {
     name: 'Émilie R.',
-    role: 'Trésorière',
-    company: 'Collectif Gourmand Lyon',
-    avatar: '👩🏼‍🦰',
-    text: 'On a été surpris par la qualité des adresses proposées. Les établissements sont top, l\'accueil est toujours impeccable. Je recommande à toutes les assos !',
+    role: 'Trésorière BDE',
+    company: 'École de commerce · Paris',
+    avatar: '/logos/dauphine.png',
+    text: 'Les adresses proposées sont qualitatives, l\'organisation est fluide. On a doublé nos adhérents depuis qu\'on propose ces sorties gratuites à nos membres.',
     rating: 5,
   },
 ];
 
 const FAQ_ITEMS = [
   {
-    q: 'C\'est vraiment 100% gratuit ?',
-    a: 'Oui, totalement. Les expériences (repas, soins, séjours...) sont offertes par nos établissements partenaires. En contrepartie, vos membres laissent un avis Google honnête et détaillé après leur visite. Aucun frais caché, aucun engagement.',
+    q: 'C\'est gratuit. Où est le piège ?',
+    a: 'Il n\'y en a pas. Les entreprises partenaires (restaurants, hôtels, commerces, mais aussi des services en ligne) nous rémunèrent pour leur envoyer de vrais utilisateurs qui laissent un avis Google honnête. Votre association est rémunérée pour chaque mission. Aucun frais caché, aucun engagement.',
   },
   {
-    q: 'Quelles associations peuvent rejoindre le programme ?',
-    a: 'Toutes les associations à but non lucratif (loi 1901 ou équivalent) peuvent candidater : associations culturelles, sportives, étudiantes, de quartier, caritatives... On demande simplement un minimum de 5 membres actifs.',
+    q: 'Que doivent faire nos membres concrètement ?',
+    a: 'Selon la mission : se rendre dans un établissement ou tester un service en ligne (formation, application, etc.). Après l\'expérience, vos membres sont libres de laisser un avis Google sincère. Comptez 30 minutes à 2 heures selon le type de mission.',
   },
   {
-    q: 'Quel type d\'expériences sont proposées ?',
-    a: 'Restaurants (menus complets offerts), hôtels (nuitées), spas (soins), commerces locaux (produits offerts), activités de loisirs... Les expériences varient selon votre ville et les partenaires disponibles.',
+    q: 'Faut-il mettre obligatoirement 5 étoiles ?',
+    a: 'Non. On demande des avis honnêtes, pas des avis complaisants. Si l\'expérience mérite 3 étoiles, c\'est 3 étoiles. C\'est ce qui rend le programme crédible et durable. Les établissements le savent et l\'acceptent.',
   },
   {
-    q: 'Combien de membres peuvent participer à chaque sortie ?',
-    a: 'En général, chaque invitation couvre entre 2 et 6 personnes selon l\'établissement et le type d\'expérience. Les associations VIP peuvent bénéficier de groupes plus importants.',
+    q: 'Combien notre association peut-elle gagner ?',
+    a: 'Cela dépend du nombre de membres actifs et de la fréquence des missions. En moyenne, une asso de 30 membres actifs génère entre 80 et 300€ par mois. Utilisez le simulateur de revenus plus haut pour une estimation personnalisée.',
   },
   {
-    q: 'Qu\'est-ce que le statut VIP ?',
-    a: 'Les associations les plus actives (participation régulière, avis détaillés et de qualité) accèdent au statut VIP : plus d\'invitations, des expériences premium et une visibilité renforcée auprès de nos partenaires.',
+    q: 'Quelles associations sont éligibles ?',
+    a: 'Toutes les associations étudiantes, culturelles, sportives ou de quartier avec au moins 5 membres actifs. BDE, BDA, BDS, associations loi 1901 : toutes sont bienvenues. L\'inscription est ouverte dans toute la France.',
   },
   {
-    q: 'Combien de temps pour être accepté ?',
-    a: 'On étudie chaque candidature et on vous recontacte sous 48h. Si votre association est éligible, vous recevez vos premières invitations dès la semaine suivante.',
+    q: 'Combien de temps avant les premières missions ?',
+    a: 'Candidature étudiée sous 48h. Si vous êtes acceptés, les premières invitations arrivent généralement dans la semaine. Le rythme dépend ensuite des partenaires disponibles dans votre ville.',
   },
 ];
 
 const FORM_FIELDS_CLASSES =
   'w-full rounded-xl border border-warm-200 bg-warm-50 px-4 py-3 text-sm text-warm-800 outline-none transition-colors placeholder:text-warm-400 focus:border-accent focus:ring-2 focus:ring-accent/20';
 
+type MotivationLevel = 'faible' | 'moyenne' | 'forte';
+
+const MOTIVATION_LABELS: Record<MotivationLevel, { label: string; emoji: string }> = {
+  faible: { label: 'Tranquille', emoji: '🌱' },
+  moyenne: { label: 'Motivée', emoji: '🔥' },
+  forte: { label: 'Ultra-active', emoji: '🚀' },
+};
+
+function computeSimulation(members: number, motivation: MotivationLevel) {
+  const perMemberPerWeek: Record<MotivationLevel, number> = { faible: 3, moyenne: 6, forte: 12 };
+  const testAnnual = members * perMemberPerWeek[motivation] * 52;
+
+  const clientMonthly: Record<MotivationLevel, number> = { faible: 150, moyenne: 300, forte: 600 };
+  const affiliationAnnual = clientMonthly[motivation] * 12;
+
+  const sponsorMonthly: Record<MotivationLevel, number> = { faible: 100, moyenne: 200, forte: 300 };
+  const recruitAnnual = sponsorMonthly[motivation] * 12;
+
+  return {
+    testAnnual,
+    affiliationAnnual,
+    recruitAnnual,
+    total: testAnnual + affiliationAnnual + recruitAnnual,
+  };
+}
+
 export default function AmbassadeurPage() {
+  const [simMembers, setSimMembers] = useState(30);
+  const [simMotivation, setSimMotivation] = useState<MotivationLevel>('moyenne');
+  const sim = computeSimulation(simMembers, simMotivation);
+
   const [formState, setFormState] = useState<'idle' | 'sending' | 'sent'>('idle');
   const [form, setForm] = useState({
     assoName: '',
+    school: '',
+    city: '',
+    members: '',
     contactName: '',
     email: '',
     phone: '',
-    city: '',
-    members: '',
     message: '',
   });
 
@@ -274,8 +324,8 @@ export default function AmbassadeurPage() {
 
   return (
     <main>
-      {/* ── Hero ── */}
-      <section className="relative overflow-hidden px-4 sm:px-6 pb-0 pt-10 sm:pt-16 md:pt-20">
+      {/* ── 1. Hero ── */}
+      <section className="relative overflow-hidden px-4 sm:px-6 pb-12 sm:pb-16 md:pb-24 pt-10 sm:pt-16 md:pt-20">
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div className="hero-dot-grid absolute inset-0" />
           <div className="hero-glow" />
@@ -287,38 +337,39 @@ export default function AmbassadeurPage() {
               <Reveal>
                 <div className="mb-4 sm:mb-6 inline-flex items-center gap-2 rounded-full border border-warm-200 bg-white px-5 py-2.5 text-sm font-semibold shadow-soft">
                   <Gift weight="fill" className="h-4 w-4 text-accent-dark" />
-                  100% Gratuit · Associations · Exclusif
+                  Programme Ambassadeur · Gratuit · Places limitées
                 </div>
               </Reveal>
 
               <Reveal delay={0.08}>
                 <h1 className="text-balance text-heading-xl text-warm-900 sm:text-display-lg md:text-display-xl">
-                  Programme <span className="serif-accent serif-accent-animated">Ambassadeur</span>
+                  Rejoignez le programme <span className="serif-accent serif-accent-animated">Ambassadeur</span>
                 </h1>
               </Reveal>
 
               <Reveal delay={0.16}>
                 <p className="mt-4 sm:mt-6 max-w-xl text-body-sm sm:text-body-lg text-warm-600">
-                  Votre association teste gratuitement des restaurants, hôtels et
-                  commerces locaux en échange d&apos;avis Google authentiques.
-                  Des expériences uniques pour votre communauté.
+                  Gagnez de l&apos;argent en aidant des entreprises à améliorer leur réputation en ligne.
                 </p>
               </Reveal>
 
               <Reveal delay={0.24}>
                 <div className="mt-6 sm:mt-10 flex flex-col gap-4 sm:flex-row">
-                  <a href="#inscription" className="btn-primary">
-                    Rejoindre le programme
+                  <a href="#simulateur" className="btn-primary">
+                    Devenir ambassadeur
                   </a>
                   <a href="#concept" className="btn-secondary">
-                    En savoir plus
+                    Comment ça marche
                   </a>
                 </div>
               </Reveal>
             </div>
 
             <Reveal delay={0.3} className="relative hidden min-h-[420px] lg:block">
-              {/* Google Business Profile card - Restaurant invitation */}
+              <Sticker className="absolute -left-6 top-[8%] z-40 text-5xl xl:text-6xl" rotate={-12} floatDuration={3.2} floatStyle="float">🍔</Sticker>
+              <Sticker className="absolute left-[10%] bottom-[2%] z-40 text-5xl xl:text-6xl" rotate={15} floatDuration={3.6} floatStyle="bob">⭐</Sticker>
+              <Sticker className="absolute right-[-12px] top-[42%] z-40 text-5xl xl:text-6xl" rotate={-8} floatDuration={3} floatStyle="sway">💰</Sticker>
+
               <motion.div
                 className="absolute right-0 top-0 z-10 w-[310px] overflow-hidden rounded-2xl border border-[#e8eaed] bg-white shadow-card"
                 animate={{ y: [0, -8, 0] }}
@@ -335,7 +386,7 @@ export default function AmbassadeurPage() {
                       <ForkKnife weight="fill" className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-[13px] font-medium text-[#202124]">La Belle Époque</p>
+                      <p className="text-[13px] font-medium text-[#202124]">Restaurant partenaire</p>
                       <p className="text-[11px] text-[#70757a]">Restaurant · Paris 6e</p>
                     </div>
                   </div>
@@ -360,7 +411,6 @@ export default function AmbassadeurPage() {
                 </div>
               </motion.div>
 
-              {/* Activity dashboard card */}
               <motion.div
                 className="absolute bottom-0 left-0 z-20 w-[265px] overflow-hidden rounded-2xl border border-[#e8eaed] bg-white shadow-card"
                 animate={{ y: [0, -6, 0] }}
@@ -404,7 +454,6 @@ export default function AmbassadeurPage() {
                 </div>
               </motion.div>
 
-              {/* VIP status badge */}
               <motion.div
                 className="absolute right-4 bottom-12 z-30 flex items-center gap-2 rounded-full border border-[#e8eaed] bg-white px-3.5 py-2 shadow-card"
                 animate={{ y: [0, -5, 0] }}
@@ -421,109 +470,170 @@ export default function AmbassadeurPage() {
             </Reveal>
           </div>
         </div>
+      </section>
 
-        <div className="mt-10 sm:mt-16 overflow-hidden border-t border-warm-200 bg-white/60 py-5 md:mt-20">
-          <div className="logos-marquee flex items-center gap-14 sm:gap-20">
-            {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
-              <div key={i} className="flex h-8 w-28 shrink-0 items-center justify-center sm:h-10 sm:w-36">
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
+      {/* ── Simulateur de revenus ── */}
+      <section id="simulateur" className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="mx-auto max-w-xl">
+          <Reveal className="mb-6 sm:mb-8 text-center">
+            <p className="section-label mb-3 justify-center">Simulateur</p>
+            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+              Combien votre asso peut <span className="serif-accent">gagner</span>&nbsp;?
+            </h2>
+            <p className="mx-auto mt-3 max-w-md text-body-sm text-warm-500">
+              Ajustez le nombre de membres et le niveau d&apos;implication pour voir une estimation réaliste.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="rounded-2xl border border-warm-200 bg-white p-4 sm:p-6 shadow-soft">
+              <div className="mb-5">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-warm-600">Nombre de membres</span>
+                  <motion.span
+                    key={simMembers}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="min-w-[2.25rem] rounded-full bg-warm-900 px-2.5 py-0.5 text-center text-xs font-bold tabular-nums text-white"
+                  >
+                    {simMembers}
+                  </motion.span>
+                </div>
+                <input
+                  type="range"
+                  min={10}
+                  max={150}
+                  step={5}
+                  value={simMembers}
+                  onChange={(e) => setSimMembers(Number(e.target.value))}
+                  className="pricing-slider w-full"
+                  style={{
+                    background: `linear-gradient(to right, #1A1714 0%, #1A1714 ${((simMembers - 10) / 140) * 100}%, #E3DCD2 ${((simMembers - 10) / 140) * 100}%, #E3DCD2 100%)`,
+                  }}
                 />
+                <div className="mt-1 flex justify-between text-xs text-warm-400">
+                  <span>10</span>
+                  <span>50</span>
+                  <span>100</span>
+                  <span>150</span>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* ── Problème ── */}
-      <section id="concept" className="px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mb-10 sm:mb-16 text-center">
-            <p className="section-label mb-4 justify-center">Le problème</p>
-            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Vos activités d&apos;asso méritent mieux que le <span className="serif-accent">statu quo.</span>
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              Proposer des sorties originales à vos membres sans exploser votre budget, c&apos;est le défi de toute association. Et si on le résolvait pour vous ?
-            </p>
-          </Reveal>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            {PROBLEMS.map((problem, i) => (
-              <Reveal key={problem.title} delay={i * 0.08}>
-                <div className="relative flex h-full flex-col items-start gap-4 rounded-2xl border border-red-100 bg-red-50/30 p-6">
-                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-red-100 text-red-600">
-                    <FreehandIcon name={problem.icon} size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-medium text-warm-900">{problem.title}</h3>
-                    <p className="mt-2 text-body-sm leading-relaxed text-warm-500">{problem.description}</p>
-                  </div>
+              <div className="mb-5">
+                <span className="mb-2 block text-sm font-medium text-warm-600">Implication de vos membres</span>
+                <div className="grid grid-cols-3 gap-1.5">
+                  {(Object.keys(MOTIVATION_LABELS) as MotivationLevel[]).map((key) => (
+                    <button
+                      key={key}
+                      onClick={() => setSimMotivation(key)}
+                      className={`rounded-lg border px-2 py-2 text-center transition-all duration-200 ${
+                        simMotivation === key
+                          ? 'border-warm-900 bg-warm-900 text-white shadow-md shadow-warm-900/15'
+                          : 'border-warm-200 bg-warm-50 text-warm-600 hover:border-warm-300'
+                      }`}
+                    >
+                      <span className="block text-xl leading-none">{MOTIVATION_LABELS[key].emoji}</span>
+                      <span className="block text-xs font-semibold mt-1.5 leading-none">{MOTIVATION_LABELS[key].label}</span>
+                    </button>
+                  ))}
                 </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+              </div>
 
-      {/* ── Stats bar ── */}
-      <section className="border-y border-warm-200 bg-white px-4 sm:px-6 py-10 sm:py-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {STATS.map((stat, i) => (
-              <Reveal key={stat.label} delay={i * 0.06}>
-                <div className="text-center">
-                  <p className="serif-accent text-[2rem] sm:text-[2.5rem] leading-none tracking-tight text-warm-900 md:text-[3rem]">
-                    {stat.value}
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-warm-500">{stat.label}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+              <div className="h-px bg-warm-200/60 mb-4" />
 
-      {/* ── Solution intro ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl">
-          <Reveal className="text-center">
-            <div className="mx-auto mb-4 sm:mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/10">
-              <Lightbulb weight="fill" className="h-7 w-7 text-accent-dark" />
+              <div className="mb-4 rounded-xl bg-warm-900 px-4 py-4 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-warm-400 mb-0.5">Revenu annuel estimé</p>
+                <motion.p
+                  key={sim.total}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  className="serif-accent text-[2rem] sm:text-[2.5rem] leading-none tracking-tight text-white"
+                >
+                  {sim.total.toLocaleString('fr-FR')}€
+                </motion.p>
+                <p className="mt-1 text-sm text-warm-400">
+                  soit <strong className="text-white">{Math.round(sim.total / 12).toLocaleString('fr-FR')}€/mois</strong> pour votre asso
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                {[
+                  { label: 'Missions (avis rémunérés)', value: sim.testAnnual, icon: <Star weight="fill" className="h-4 w-4 text-warm-900" /> },
+                  { label: 'Apport clients (commissions)', value: sim.affiliationAnnual, icon: <Handshake weight="fill" className="h-4 w-4 text-warm-900" /> },
+                  { label: 'Parrainage (bonus)', value: sim.recruitAnnual, icon: <UserPlus weight="fill" className="h-4 w-4 text-warm-900" /> },
+                ].map((line) => (
+                  <div key={line.label} className="flex items-center justify-between rounded-lg bg-warm-50 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      {line.icon}
+                      <span className="text-sm text-warm-900">{line.label}</span>
+                    </div>
+                    <motion.span
+                      key={line.value}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-sm font-bold tabular-nums text-warm-900"
+                    >
+                      {line.value.toLocaleString('fr-FR')}€
+                    </motion.span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 flex justify-center">
+                <a href="#inscription" className="btn-primary">
+                  Devenir ambassadeur
+                </a>
+              </div>
             </div>
-            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Et si votre asso profitait d&apos;expériences <span className="serif-accent">gratuites</span> ?
-            </h2>
-            <p className="mx-auto mt-4 sm:mt-6 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              On vous invite dans nos établissements partenaires, vos membres vivent l&apos;expérience,
-              et ils partagent un avis honnête sur Google. C&apos;est simple, gratuit, et tout le monde y gagne.
-            </p>
           </Reveal>
         </div>
       </section>
 
-      {/* ── Process (dark) ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20">
-        <div className="mx-auto max-w-5xl">
-          <Reveal className="mb-8 sm:mb-12 text-center">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Comment ça marche</p>
-            <h2 className="text-heading-xl text-white sm:text-display">
-              3 étapes pour devenir <span className="serif-accent text-accent">ambassadeur.</span>
+      {/* ── 2. Logo défilant ── */}
+      <section className="overflow-hidden border-y border-warm-200 bg-white py-4 sm:py-6">
+        <div className="logos-marquee flex items-center gap-12 sm:gap-16">
+          {[...CLIENT_LOGOS, ...CLIENT_LOGOS].map((client, i) => (
+            <div key={i} className="flex h-6 w-20 shrink-0 items-center justify-center sm:h-7 sm:w-28">
+              <img
+                src={client.logo}
+                alt={client.name}
+                className="max-h-full max-w-full object-contain opacity-40 grayscale transition-all hover:opacity-70 hover:grayscale-0"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── 3. Comment ça marche ── */}
+      <section id="concept" className="relative overflow-hidden bg-warm-900 px-4 sm:px-6 py-14 sm:py-24">
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute left-1/2 top-0 h-[400px] w-[600px] -translate-x-1/2 -translate-y-1/3 rounded-full bg-accent/[0.04] blur-[120px]" />
+        </div>
+
+        <div className="relative mx-auto max-w-5xl">
+          <Reveal className="mb-10 sm:mb-16 text-center">
+            <p className="section-label mb-4 justify-center !text-accent before:!bg-accent/40">Comment ça marche</p>
+            <h2 className="text-balance text-heading-xl text-white sm:text-display">
+              Comment ça <span className="serif-accent text-accent">fonctionne ?</span>
             </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-white/50">
+              Inscrivez-vous, profitez, soyez rémunérés. Le programme est conçu pour être simple dès le premier jour.
+            </p>
           </Reveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {STEPS.map((step, i) => (
-              <Reveal key={step.num} delay={i * 0.1}>
-                <div className="text-center">
-                  <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.05] text-accent">
-                    <FreehandIcon name={step.icon} size={24} />
+              <Reveal key={step.num} delay={i * 0.08}>
+                <div className="relative flex h-full flex-col items-start gap-5 rounded-2xl border border-white/[0.08] bg-white/[0.04] p-6 sm:p-8 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/20 hover:bg-white/[0.06]">
+                  <div className="inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-accent/20 to-accent/5 ring-1 ring-accent/10 text-accent">
+                    <FreehandIcon name={step.icon} size={44} />
                   </div>
-                  <p className="mb-1.5 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
-                  <h3 className="text-lg font-medium text-white">{step.title}</h3>
-                  <p className="mx-auto mt-2 max-w-[260px] text-sm leading-relaxed text-white/50">{step.description}</p>
+                  <div>
+                    <p className="mb-2 text-xs font-bold uppercase tracking-wider text-accent">Étape {step.num}</p>
+                    <h3 className="text-xl sm:text-2xl font-semibold text-white">{step.title}</h3>
+                    <p className="mt-2.5 text-body-sm sm:text-base leading-relaxed text-white/50">{step.description}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}
@@ -531,24 +641,20 @@ export default function AmbassadeurPage() {
         </div>
       </section>
 
-      {/* ── Benefits ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-24">
+      {/* ── 5. Avantages ── */}
+      <section className="bg-warm-100 px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-16 text-center">
-            <p className="section-label mb-4 justify-center">Avantages</p>
+            <p className="section-label mb-4 justify-center">Pourquoi rejoindre</p>
             <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Ce que vous y <span className="serif-accent">gagnez.</span>
+              Ce que votre asso y gagne. <span className="serif-accent">Concrètement.</span>
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-body-sm sm:text-body-lg text-warm-500">
-              En rejoignant le programme, votre association et ses membres profitent
-              d&apos;expériences exclusives, gratuitement.
-            </p>
           </Reveal>
 
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
             {BENEFITS.map((benefit, i) => (
               <Reveal key={benefit.title} delay={i * 0.06}>
-                <div className="card-hover group relative flex h-full flex-col items-start gap-4 p-6">
+                <div className="group relative flex h-full flex-col items-start gap-4 rounded-xl border border-warm-200/80 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] sm:rounded-2xl sm:p-7">
                   <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-warm-100 text-warm-700 transition-colors group-hover:bg-accent-light group-hover:text-accent-dark">
                     <FreehandIcon name={benefit.icon} size={20} />
                   </div>
@@ -563,58 +669,28 @@ export default function AmbassadeurPage() {
         </div>
       </section>
 
-      {/* ── Comparison table ── */}
-      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-3xl">
-          <Reveal className="mb-8 sm:mb-12 text-center">
-            <p className="section-label mb-4 justify-center">Notre différence</p>
-            <h2 className="text-heading-xl text-warm-900">
-              Programme Ambassadeur vs. les <span className="serif-accent">autres.</span>
-            </h2>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <div className="overflow-hidden rounded-2xl border border-warm-200 bg-white shadow-soft">
-              <div className="grid grid-cols-3 border-b border-warm-200 bg-warm-50 px-3 sm:px-6 py-3 text-[11px] font-bold uppercase tracking-[0.15em] text-warm-400">
-                <span>Critère</span>
-                <span className="text-center">Programme Siva</span>
-                <span className="text-center">Autres programmes</span>
-              </div>
-              {COMPARISON.map((row, i) => (
-                <div key={row.label} className={`grid grid-cols-3 items-center px-3 sm:px-6 py-4 ${i < COMPARISON.length - 1 ? 'border-b border-warm-100' : ''}`}>
-                  <span className="text-sm font-medium text-warm-900">{row.label}</span>
-                  <div className="flex justify-center">
-                    <CheckCircle weight="fill" className="h-5 w-5 text-positive" />
-                  </div>
-                  <div className="flex justify-center">
-                    {row.others ? (
-                      <CheckCircle weight="fill" className="h-5 w-5 text-warm-300" />
-                    ) : (
-                      <span className="text-sm text-red-400">✕</span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Témoignages ── */}
+      {/* ── 6. Social proof – Témoignages ── */}
       <section className="px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-7xl">
           <Reveal className="mb-10 sm:mb-16 text-center">
-            <p className="section-label mb-4 justify-center">Ils nous font confiance</p>
+            <p className="section-label mb-4 justify-center">Retours d&apos;expérience</p>
             <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
-              Des associations qui en parlent <span className="serif-accent">mieux que nous.</span>
+              Ils ont rejoint le <span className="serif-accent">programme.</span>
             </h2>
           </Reveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {TESTIMONIALS.map((t, i) => (
               <Reveal key={t.name} delay={i * 0.08}>
-                <div className="card-hover flex h-full flex-col justify-between p-6">
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-warm-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:rounded-3xl sm:p-7">
                   <div>
+                    <div className="mb-4 flex h-10 w-28 items-center sm:h-12 sm:w-32">
+                      <img
+                        src={t.avatar}
+                        alt={t.company}
+                        className="max-h-full max-w-full object-contain"
+                      />
+                    </div>
                     <div className="mb-3 flex gap-0.5">
                       {Array.from({ length: t.rating }).map((_, j) => (
                         <Star key={j} weight="fill" className="h-4 w-4 text-[#FBBC04]" />
@@ -623,7 +699,6 @@ export default function AmbassadeurPage() {
                     <p className="text-[15px] leading-relaxed text-warm-600">&ldquo;{t.text}&rdquo;</p>
                   </div>
                   <div className="mt-6 flex items-center gap-3 border-t border-warm-100 pt-5">
-                    <span className="text-2xl">{t.avatar}</span>
                     <div>
                       <p className="text-sm font-semibold text-warm-900">{t.name}</p>
                       <p className="text-xs text-warm-500">{t.role} · {t.company}</p>
@@ -636,66 +711,7 @@ export default function AmbassadeurPage() {
         </div>
       </section>
 
-      {/* ── Pricing card ── */}
-      <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
-        <div className="mx-auto max-w-4xl">
-          <Reveal>
-            <div className="rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 shadow-soft lg:p-12">
-              <div className="mb-8 text-center">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-warm-900 shadow-lg shadow-accent/25">
-                  Gratuit
-                </span>
-                <h3 className="mt-4 text-2xl font-medium text-warm-900">Programme Ambassadeur</h3>
-                <div className="mt-4">
-                  <span className="serif-accent text-[2.5rem] sm:text-[3.25rem] leading-none tracking-tight text-warm-900">0€</span>
-                </div>
-                <p className="mt-2 text-sm text-warm-500">Aucun frais, aucun engagement</p>
-              </div>
-
-              <div className="mb-8 h-px bg-warm-200/60" />
-
-              <p className="mb-6 text-[10px] font-bold uppercase tracking-[0.2em] text-warm-400">
-                Ce qui est inclus
-              </p>
-              <ul className="grid gap-4 sm:grid-cols-2">
-                {INCLUDED.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-[15px] text-warm-700">
-                    <CheckCircle weight="fill" className="mt-0.5 h-[18px] w-[18px] shrink-0 text-accent-dark" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mt-6 sm:mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a href="#inscription" className="btn-accent">
-                  Rejoindre le programme
-                </a>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── Garantie ── */}
-      <section className="px-4 sm:px-6 py-14 sm:py-20">
-        <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <div className="flex flex-col items-center gap-6 rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 text-center shadow-soft md:flex-row md:text-left lg:p-10">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-positive/10">
-                <Medal weight="fill" className="h-8 w-8 text-positive" />
-              </div>
-              <div>
-                <h3 className="text-xl font-medium text-warm-900">Expériences garanties, sans surprise</h3>
-                <p className="mt-2 text-body-sm leading-relaxed text-warm-500">
-                  Chaque établissement partenaire est vérifié par notre équipe. On s&apos;assure de la qualité de l&apos;expérience avant de vous inviter. Si une sortie ne vous convient pas, on vous en propose une autre. 100% des associations recommandent le programme.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
+      {/* ── 7. FAQ ── */}
       <section className="bg-warm-50 px-4 sm:px-6 py-14 sm:py-24">
         <div className="mx-auto max-w-3xl">
           <Reveal className="mb-8 sm:mb-12 text-center">
@@ -706,7 +722,7 @@ export default function AmbassadeurPage() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-warm-200 bg-white px-4 sm:px-6 shadow-soft md:px-8">
+            <div className="rounded-2xl border border-warm-200 bg-white px-4 sm:px-6 shadow-soft sm:rounded-3xl md:px-8">
               {FAQ_ITEMS.map((item) => (
                 <FAQItem key={item.q} q={item.q} a={item.a} />
               ))}
@@ -720,17 +736,17 @@ export default function AmbassadeurPage() {
         <div className="mx-auto max-w-3xl">
           <Reveal className="mb-8 sm:mb-12 text-center">
             <p className="section-label mb-4 justify-center">Inscription</p>
-            <h2 className="text-heading-xl text-warm-900">
-              Inscrivez votre <span className="serif-accent">association</span>
+            <h2 className="text-balance text-heading-xl text-warm-900 sm:text-display">
+              Rejoignez le <span className="serif-accent">programme</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-warm-500">
-              Remplissez le formulaire ci-dessous. On revient vers vous sous 48h avec
-              les prochaines étapes.
+              Inscription en 2 minutes. Candidature étudiée sous 48h.
+              Premières missions dès la semaine suivante.
             </p>
           </Reveal>
 
           <Reveal delay={0.12}>
-            <div className="rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 shadow-soft lg:p-10">
+            <div className="rounded-2xl sm:rounded-3xl border border-warm-200 bg-white p-5 sm:p-8 shadow-card lg:p-10">
               {formState === 'sent' ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-positive/10">
@@ -748,11 +764,12 @@ export default function AmbassadeurPage() {
                       setFormState('idle');
                       setForm({
                         assoName: '',
+                        school: '',
+                        city: '',
+                        members: '',
                         contactName: '',
                         email: '',
                         phone: '',
-                        city: '',
-                        members: '',
                         message: '',
                       });
                     }}
@@ -778,64 +795,25 @@ export default function AmbassadeurPage() {
                         required
                         value={form.assoName}
                         onChange={handleChange}
-                        placeholder="Les Gourmets Solidaires"
+                        placeholder="BDE Sorbonne"
                         className={FORM_FIELDS_CLASSES}
                       />
                     </div>
                     <div>
                       <label
-                        htmlFor="contactName"
+                        htmlFor="school"
                         className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
                       >
-                        Nom du référent *
+                        École / Université *
                       </label>
                       <input
-                        id="contactName"
-                        name="contactName"
+                        id="school"
+                        name="school"
                         type="text"
                         required
-                        value={form.contactName}
+                        value={form.school}
                         onChange={handleChange}
-                        placeholder="Marie Dupont"
-                        className={FORM_FIELDS_CLASSES}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid gap-5 sm:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
-                      >
-                        Email *
-                      </label>
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={handleChange}
-                        placeholder="contact@monasso.fr"
-                        className={FORM_FIELDS_CLASSES}
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
-                      >
-                        Téléphone *
-                      </label>
-                      <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        required
-                        value={form.phone}
-                        onChange={handleChange}
-                        placeholder="06 12 34 56 78"
+                        placeholder="Sorbonne Université"
                         className={FORM_FIELDS_CLASSES}
                       />
                     </div>
@@ -865,18 +843,19 @@ export default function AmbassadeurPage() {
                         htmlFor="members"
                         className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
                       >
-                        Nombre de membres
+                        Nombre de membres *
                       </label>
                       <select
                         id="members"
                         name="members"
+                        required
                         value={form.members}
                         onChange={handleChange}
                         className={FORM_FIELDS_CLASSES}
                       >
                         <option value="">Sélectionnez</option>
-                        <option value="1-10">1 – 10</option>
-                        <option value="11-30">11 – 30</option>
+                        <option value="5-15">5 – 15</option>
+                        <option value="16-30">16 – 30</option>
                         <option value="31-50">31 – 50</option>
                         <option value="51-100">51 – 100</option>
                         <option value="100+">100+</option>
@@ -884,12 +863,69 @@ export default function AmbassadeurPage() {
                     </div>
                   </div>
 
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label
+                        htmlFor="contactName"
+                        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
+                      >
+                        Nom du responsable *
+                      </label>
+                      <input
+                        id="contactName"
+                        name="contactName"
+                        type="text"
+                        required
+                        value={form.contactName}
+                        onChange={handleChange}
+                        placeholder="Jean Dupont"
+                        className={FORM_FIELDS_CLASSES}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
+                      >
+                        Email *
+                      </label>
+                      <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        value={form.email}
+                        onChange={handleChange}
+                        placeholder="contact@bde-sorbonne.fr"
+                        className={FORM_FIELDS_CLASSES}
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="phone"
+                      className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
+                    >
+                      Téléphone (optionnel)
+                    </label>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={form.phone}
+                      onChange={handleChange}
+                      placeholder="06 12 34 56 78"
+                      className={FORM_FIELDS_CLASSES}
+                    />
+                  </div>
+
                   <div>
                     <label
                       htmlFor="message"
                       className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-warm-400"
                     >
-                      Parlez-nous de votre association
+                      Un mot sur votre asso (optionnel)
                     </label>
                     <textarea
                       id="message"
@@ -897,7 +933,7 @@ export default function AmbassadeurPage() {
                       rows={4}
                       value={form.message}
                       onChange={handleChange}
-                      placeholder="Décrivez votre asso, vos activités, pourquoi vous souhaitez rejoindre le programme..."
+                      placeholder="Présentez brièvement votre association, vos membres, ce qui vous intéresse dans le programme..."
                       className={`${FORM_FIELDS_CLASSES} resize-none`}
                     />
                   </div>
@@ -905,7 +941,7 @@ export default function AmbassadeurPage() {
                   <button
                     type="submit"
                     disabled={formState === 'sending'}
-                    className="btn-primary w-full disabled:opacity-60"
+                    className="btn-primary disabled:opacity-60"
                   >
                     {formState === 'sending' ? (
                       <span className="flex items-center justify-center gap-2">
@@ -924,19 +960,19 @@ export default function AmbassadeurPage() {
       </section>
 
       {/* ── CTA final ── */}
-      <section className="bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 text-white">
+      <section className="rounded-t-[1.5rem] bg-warm-900 px-4 sm:px-6 py-14 sm:py-20 sm:rounded-t-[2.5rem] text-white">
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-heading-xl text-white">
-              Des expériences gratuites pour votre <span className="serif-accent text-accent">communauté</span>
+            <h2 className="text-heading-xl sm:text-display md:text-display-lg text-white">
+              Les places sont limitées par <span className="serif-accent text-accent">ville.</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-body-sm sm:text-body-lg text-white/60">
-              Plus de 50 établissements partenaires vous attendent. Inscrivez votre
-              association et commencez à profiter dès cette semaine.
+              Plus de 200 associations nous font déjà confiance. Inscrivez la vôtre
+              avant que les créneaux de votre ville soient complets.
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <a href="#inscription" className="btn-accent">
-                Inscrire mon association
+                Devenir ambassadeur
               </a>
             </div>
           </div>
